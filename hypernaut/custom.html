@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<head>
+    <title>Custom Page</title>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" 
+        type="image/png" 
+        href="assets/home.svg">
+</head>
+<body style="background-color:  #37394c;">
+    <image src="assets/logo3.svg" class="logo"></image>
+    <header class="banner">
+        <h1>Create Your Own Page on this site!</h1>
+      </header>  
+      <div id="card-grid">
+        <div class="card">
+          <a id="createpage" href="games.html">
+          <img src="assets/play.svg" alt="Card Thumbnail">
+          </a>
+          <h3>Make A Scratch Game Page</h3>
+        </div>
+        <div class="card">
+          <a href="booklets.html">
+          <img src="assets/page.svg" alt="Card Thumbnail">
+          </a>
+          <h3>Start With A Blank Page!</h3>
+        </div>
+        <div class="card">
+          <a href="math.html">
+          <img src="assets/math.svg" alt="Card Thumbnail">
+          </a>
+          <h3>School Utilities</h3>
+        </div>
+        <div class="card">
+          <img src="assets/extra.svg" alt="Card Thumbnail">
+          <h3>Card 4</h3>
+        </div>
+      </div>   
+      <script>
+        const fs = require('fs');
+        // Select the button element
+        const writeFileButton = document.querySelector('#createpage');
+    
+        // Add a click event listener to the button
+        writeFileButton.addEventListener('click', () => {
+          // Get the HTML content to write to the file
+          const htmlContent = '<html>Whatever</html>';
+    
+          // Write the HTML content to the file
+          fs.writeFile('/pages/dmfsf.html', htmlContent, (error) => {
+            if (error) {
+              // Handle the error
+              console.error(error);
+            } else {
+              console.log('File written successfully');
+            }
+          });
+        });
+      </script>
+</body>
+
+    <script>
+        // Find and remove the element with specific inline styles
+        function removeElementWithStyles(styles) {
+            var elements = document.querySelectorAll('[style="' + styles + '"]');
+            
+            elements.forEach(function(element) {
+                element.remove();
+            });
+        }
+
+        var stylesToRemove = 'text-align:right;position:fixed;z-index:9999999;bottom:0;width:auto;right:1%;cursor:pointer;line-height:0;display:block!important';
+
+        removeElementWithStyles(stylesToRemove);
+    </script>

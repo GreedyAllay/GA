@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<head>
+    <title>Mineware Labs</title>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="scratchstyle.css">
+        <link rel="icon" 
+        type="image/png" 
+        href="assets/home.svg">
+</head>
+<body style="background-color:  #37394c;">
+    <a href="https://greedyallay.000webhostapp.com/">
+    <div>Check out the new Greedy OS! </div>
+    </a>
+    <image src="assets/logo3.svg" class="logo"></image>
+    <header class="banner">
+      <h1 class="largetxt"><img class="icon" src="assets/home.svg">Welcome to the homepage</h1>
+      </header>
+      <div id="card-grid">
+        <a href="games.html">
+        <div class="card">
+          <img src="assets/games.svg" alt="Card Thumbnail">
+          <h3>Games 🔥</h3>
+        </div>
+        </a>
+        <a href="booklets.html">
+        <div class="card">
+          <img src="assets/booklets.svg" alt="Card Thumbnail">
+          <h3>Bookmarklets</h3>
+        </div>
+        </a>
+        <a href="misc.html">
+        <div class="card">
+          <img src="assets/extra.svg" alt="Card Thumbnail">
+          <h3>Miscellaneous</h3>
+        </div>
+        </a>
+        <a href="mods.html">
+        <div class="card">
+          <img src="assets/minecraft.svg" alt="Card Thumbnail">
+          <h3>Minecraft Mods</h3>
+        </div>
+        </a>
+</body>
+
+    <script>
+        // Find and remove the element with specific inline styles
+        function removeElementWithStyles(styles) {
+            var elements = document.querySelectorAll('[style="' + styles + '"]');
+            
+            elements.forEach(function(element) {
+                element.remove();
+            });
+        }
+
+        var stylesToRemove = 'text-align:right;position:fixed;z-index:9999999;bottom:0;width:auto;right:1%;cursor:pointer;line-height:0;display:block!important';
+
+        removeElementWithStyles(stylesToRemove);
+    </script>

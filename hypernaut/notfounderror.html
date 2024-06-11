@@ -1,0 +1,31 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+<head>
+    <title>Mineware Lost</title>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" 
+        type="image/png" 
+        href="assets/unknown.svg">
+</head>
+<body style="background-color:  #37394c;">
+    <h1 class="largetxt">I hate to say this, but...</h1>
+    <h4 class="largetxt">You're lost.</h4>
+    <a href="index.html">
+        <button class="defaultbutton">There's nothing special to do here, so you better get out of here by clicking me</button>
+    </a>
+</body>
+
+    <script>
+        // Find and remove the element with specific inline styles
+        function removeElementWithStyles(styles) {
+            var elements = document.querySelectorAll('[style="' + styles + '"]');
+            
+            elements.forEach(function(element) {
+                element.remove();
+            });
+        }
+
+        var stylesToRemove = 'text-align:right;position:fixed;z-index:9999999;bottom:0;width:auto;right:1%;cursor:pointer;line-height:0;display:block!important';
+
+        removeElementWithStyles(stylesToRemove);
+    </script>

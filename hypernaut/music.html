@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="icon" 
+  type="image/png" 
+  href="assets/featured.svg">
+  <title>Mineware Featured</title>
+</head>
+<body style="background-color:  #37394c;">
+  <div id="top-bar">
+    <a href="index.html">
+    <img src="assets/music.svg" alt="Logo">
+    </a>
+    <a href="https://www.youtube.com/@Space-Allay">
+    <button>YouTube</button>
+<a href="https://scratch.mit.edu/users/Greedy-Allay/">
+    <button>Scratch</button>
+</a>
+<a href="https://discord.gg/XXR2cuvQR4">
+    <button>Discord</button>
+</a>
+  </div>
+  <div class="largetxt">
+    <h1 class="largetxt"><img class="icon" src="assets/music.svg">Music</h1>
+    </div>
+    <div class="card">
+        <div class="card-left">
+          <a href="https://www.youtube.com/watch?v=GaxhJHxV-Hc">
+          <img id="thumb1" class="card-thumbnail" src="assets/bsod.png" alt="Game Thumbnail">
+          </a>
+        </div>
+        <div class="card-right">
+          <h3>error</h3>
+          <p>its a song</p>
+          <a href="https://www.youtube.com/watch?v=GaxhJHxV-Hc">
+            <button class="glow-on-hover">Play</button>
+          </a>
+        </div>
+      </div>
+      My HTML sucks
+      <div class="pages">
+        <b class="textbold">On the topic of games</b>
+        <div class="combineditems">
+          <a href="games.html">
+        <button class="pageitem" class="combineditems">Featured</button>
+          </a>
+          <a href="othergames.html">
+            <button class="pageitem" class="combineditems">Games</button>
+            </a>
+        <a href="experiments.html">
+            <button class="pageitem">Experimental</button>
+          </a>
+          <a href="failed.html">
+          <button class="pageitem" class="combineditems">Failed</button>
+          </a>
+</body>  
+
+    <script>
+        // Find and remove the element with specific inline styles
+        function removeElementWithStyles(styles) {
+            var elements = document.querySelectorAll('[style="' + styles + '"]');
+            
+            elements.forEach(function(element) {
+                element.remove();
+            });
+        }
+
+        var stylesToRemove = 'text-align:right;position:fixed;z-index:9999999;bottom:0;width:auto;right:1%;cursor:pointer;line-height:0;display:block!important';
+
+        removeElementWithStyles(stylesToRemove);
+    </script>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<head>
+    <title>Mineware's Miscellaneous</title>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="scratchstyle.css">
+        <link rel="icon" 
+        type="image/png" 
+        href="assets/extra.svg">
+</head>
+<body style="background-color:  #37394c;">
+    <image src="assets/logo3.svg" class="logo"></image>
+    <header class="banner">
+      <h1 class="largetxt"><img class="icon" src="assets/extra.svg">Miscellaneous</h1>
+      </header>  
+      <div id="card-grid">
+        <a href="math.html">
+        <div class="card">
+          <img src="assets/math.svg" alt="Card Thumbnail">
+          <h3>Math</h3>
+        </div>
+        </a>
+        <a href="booklets.html">
+        <div class="card">
+          <img src="assets/hwlogo.svg" alt="Card Thumbnail">
+          <h3>Happy Wheels Levels</h3>
+        </div>
+      </a>
+      <a href="miscellaneous.html">
+        <div class="card">
+          <img src="assets/minecraft2.svg" alt="Card Thumbnail">
+          <h3>Minecraft Worlds</h3>
+        </div>
+      </a>
+      <a href="mods.html">
+        <div class="card">
+          <img src="assets/scratch.svg" alt="Card Thumbnail">
+          <h3>Cool Scratch Games</h3>
+          </div>
+        </a>
+        <a href="math.html">
+          <div class="card">
+            <img src="assets/scratch2.svg" alt="Card Thumbnail">
+            <h3>First Scratch Games</h3>
+          </div>
+        </a>
+        <a href="booklets.html">
+          <div class="card">
+            <img src="assets/minecraftserver.svg" alt="Card Thumbnail">
+            <h3>Minecraft Server</h3>
+          </div>
+        </a>
+        <a href="music.html">
+          <div class="card">
+            <img src="assets/music.svg" alt="Card Thumbnail">
+            <h3>My Music</h3>
+          </div>
+        </a>
+</body>
+
+    <script>
+        // Find and remove the element with specific inline styles
+        function removeElementWithStyles(styles) {
+            var elements = document.querySelectorAll('[style="' + styles + '"]');
+            
+            elements.forEach(function(element) {
+                element.remove();
+            });
+        }
+
+        var stylesToRemove = 'text-align:right;position:fixed;z-index:9999999;bottom:0;width:auto;right:1%;cursor:pointer;line-height:0;display:block!important';
+
+        removeElementWithStyles(stylesToRemove);
+    </script>

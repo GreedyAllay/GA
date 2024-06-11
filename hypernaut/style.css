@@ -1,0 +1,363 @@
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    position: relative;
+    width: 75%;
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #333333;
+    display:flex ;
+    margin: 1%;
+  }
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-left {
+    width: 25%;
+  }
+  
+  .card-right {
+    width: 75%;
+    padding: 3px;
+    min-height: 200px; /* Add a minimum height */
+  }
+  
+  .card h3 {
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    padding-right: -100%;
+    position: sticky;
+    margin-left: 2%;
+  }
+  
+  .card p {
+    font-size: 14px;
+    color: rgb(187, 187, 187);
+    margin-left: 2%;
+    margin-top: -2%;
+    font-weight: 200;
+  }
+  
+  .card-title {
+ padding-right: -10px;
+ opacity: 50%;
+  }
+
+  .card-thumbnail {
+    border: 6px solid #363636;
+    border-radius: 10px;
+    width: 100%;
+    height: 95%;
+    object-fit: cover;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    box-shadow: 10px 0x 8px 10px rgba(0, 0, 0, 0.2);
+  }
+  .card-thumbnail:hover {
+    background: url("assets/booklets.svg") no-repeat;
+  }
+  
+  .card-button {
+    color: white;
+    background-color: rgb(58, 58, 143);
+    border:#a10a0a;
+
+  }
+  
+  .card-button:hover {
+    background-color: rgb(22, 22, 84);
+  }
+  
+  .game {
+    width: 50%; /* Set the element's width */
+    margin: 0 auto; /* Center the element horizontally */
+    position: absolute; /* Position the element absolutely */
+    top: 50%; /* Set the top margin to 50% */
+    left: 50%; /* Set the left margin to 50% */
+    transform: translate(-50%, -50%); /* Move the element up and left by 50% of its own */
+  }
+  .pages {
+    position: fixed; /* Position the box fixed on the page */
+    top: 0; /* Set the top edge of the box to the top of the page */
+    right: 0; /* Set the left edge of the box to the left of the page */
+    width: 20%; /* Set the width of the box */
+    height: 80%; /* Set the height of the box to the full height of the page */
+    border: 1px solid black; /* Add a border to the box */
+    display: flex; /* Use flexbox layout for the box */
+    flex-direction: column; /* Stack the buttons vertically */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #333333;
+    display:flex ;
+    margin: 1%;
+  }
+
+  .pageitem {
+  width: 100%; /* Make the buttons the full width of the box */
+  margin: 1% 0; /* Add some top and bottom margin to the buttons */
+  bottom: 10px;
+  right: 10px;
+  background-color: rgb(28, 60, 205);
+  border: 10px;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', sans-serif;
+  color: azure;
+  font-size: 130%;
+  }
+  .pageitem:active {
+    font-weight: 300;
+  }
+
+  .pageitem:hover {
+    font-weight: bold;
+    background-color: rgb(70, 17, 163);
+  }
+
+  .textbold {
+    color: rgb(255, 255, 255);
+    margin: 4%;
+    font-weight: bold;
+  }
+  .conbineditems {
+    margin: 1432%;
+    display: ruby
+  }
+  .logo {
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }
+
+  #top-bar {
+    display: flex; /* Use flexbox layout for the bar */
+    align-items: center; /* Align the items in the bar vertically */
+    background-color: #333333; /* Set the background color of the bar */
+    color: white; /* Set the text color of the bar to white */
+    height: 120;
+  }
+  
+  #top-bar img {
+    height: 50px; /* Set the height of the logo */
+    margin: 0 20px; /* Add some margin to the left and right of the logo */
+    width: 50%;
+  }
+  
+  #top-bar button {
+    background-color: transparent; /* Remove the default button background */
+    border: none; /* Remove the default button border */
+    color: white; /* Set the text color of the button to white */
+    font-size: 16px; /* Set the font size of the button text */
+    margin: 0 10px; /* Add some margin to the left and right of the button */
+    cursor: pointer; /* Change the cursor to a pointer on hover */
+  }
+  #card {
+    width: 300px; /* Set the width of the card */
+    border: 1px solid rgb(67, 67, 67); /* Add a border to the card */
+    margin: 1%; /* Center the card horizontally */
+    text-align: left; /* Center the links and buttons within the card */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    position: relative;
+    width: 75%;
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #333333;
+    display:flex ;
+    margin: 1%;
+  }
+  
+  #card a {
+    display: block; /* Make the links take up the full width of the card */
+    margin: 10px 0; /* Add some top and bottom margin to the links */
+  }
+  
+  #card button {
+    background-color: #333333; /* Set the background color of the buttons */
+    color: white; /* Set the text color of the buttons to white */
+    border: none; /* Remove the default button border */
+    font-size: 16px; /* Set the font size of the button text */
+    padding: 10px; /* Add some padding to the buttons */
+    cursor: pointer; /* Change the cursor to a pointer on hover */
+  }
+
+    #card-grid {
+      display: grid; /* Use grid layout for the grid */
+      grid-template-columns: repeat(2, 50%); /* Create a 2 by 2 grid */
+      grid-gap: 10px; /* Add a gap between the cards */
+      grid-column-gap: -100px; /* Reduce the gap between the columns to 5 pixels */
+      margin-left: 10%;
+      margin-right: 10%;
+
+    }
+    #card-grid .card {
+      display: flex; /* Use flex layout for the card */
+      align-items: center; /* Center the text within the card vertically */
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+    .ytcard {
+      margin: 1%;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+
+  /* not my code */
+.glow-on-hover {
+    color: #fff;
+    background: #111;
+    z-index: 0;
+    border-radius: 10px;
+    border: 6px solid #363636;
+    border-radius: 10px;
+    object-fit: cover;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 25px 100px;
+    cursor: pointer;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+}
+
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+}
+
+.glow-on-hover:active {
+    color: #000
+}
+
+.glow-on-hover:active:after {
+    background: transparent;
+}
+
+.glow-on-hover:hover:before {
+    opacity: 1;
+}
+
+.glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: centered;
+    width: 75%;
+    height: 75%;
+    background: #111;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+#thumb1:hover {
+  background-image: url('assets/booklets.svg');
+}
+
+.largetxt {
+ color: #0073ff;
+ font-family: sans-serif;
+ border-radius: 4px;
+ background-color: #354182;
+ width: fit-content;
+ font-size: 100px;
+ margin: 10px;
+}
+
+.defaultbutton {
+  margin: 1% 0; /* Add some top and bottom margin to the buttons */
+  bottom: 10px;
+  right: 10px;
+  background-color: rgb(58, 58, 143);
+  border: 10px;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  font-family:'Arial Narrow Bold', sans-serif;
+  font-size: rgb(58, 58, 143);
+  color: #a5c3dc;
+}
+.defaultbutton:hover {
+  background-color: rgb(76, 76, 187);
+}
+.icon {
+ max-height: 10%;
+ position: relative;
+}
+.scratchbutton {
+  display: inline-block;
+  margin: 0.5em 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background-color: #4d97ff;
+  cursor: pointer;
+  padding: 1em 1.25em;
+  color: #fff;
+  font-size: .8rem;
+  font-weight: bold;
+}
+.gamesgrid {
+  display: grid; /* Use grid layout for the grid */
+  grid-template-columns: repeat(1, 50%); /* Create a 2 by 2 grid */
+  margin: 1%;
+  background-color: #333333;
+  width: 20%;
+  border-radius: 4px;
+}
+.gamecard {
+  margin: 10%;
+  width: 150%;
+  border-radius: 2%;
+}
+.gamecardtext {
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  font-family: sans-serif;
+  margin-left: 10%;
+  margin-top: 4px;
+}
+#bg1 {
+  background-image: url(assets/dirt.png);
+}
+#bg2 {
+  background-image: url(assets/stone.png);
+}
+#bg3 {
+  background-image: url(assets/roverground.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#bg4 {
+  background-image: url(assets/glitchformerbg.jpg);
+}

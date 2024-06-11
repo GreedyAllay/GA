@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="icon" 
+  type="image/png" 
+  href="assets/booklets.svg">
+  <title>Mineware Booklets</title>
+</head>
+<body style="background-color:  #37394c;">
+  <div id="top-bar">
+    <a href="index.html">
+    <img src="assets/logo2.svg" alt="Logo">
+    </a>
+    <button>Button 1</button>
+    <button>Button 2</button>
+    <button>Button 3</button>
+  </div>
+  <div id="card">
+    <a href="javascript:document.body.contentEditable = 'true'; document.designMode='on'; void 0">
+      <button>Edit page</button>
+    </a>
+    <hr>
+    <a href="javascript:document.body.contentEditable = 'false'; document.designMode='off'; void 0">
+      <button>Stop Editing page</button>
+    </a>
+    <hr>
+    <a href="javascript:fetch('https://thatfrueddued.github.io/kahoot-smasher/BadNameFilterBypass.js').then(function(response){response.text().then(function(text){eval(text);});});">
+      <button>Bypass Kahoot ProfanityFilter</button>
+    </a>
+  </div>
+  <div id="card">
+    <a href="javascript:(function(){ var IN,F;IN=document.getElementsByTagName('input'); for(var i=0;i<IN.length;i++){F=IN[i]; if(F.type.toLowerCase()=='password'){ try{F.type='text'}catch(r){ var n,Fa;n=document.createElement('input'); Fa=F.attributes;for(var ii=0;ii<Fa.length;ii++){ var k,knn,knv;k=Fa[ii];knn=k.nodeName;knv=k.nodeValue; if(knn.toLowerCase()!='type'){ if(knn!='height'&&knn!='width'&!!knv)n[knn]=knv}}; F.parentNode.replaceChild(n,F)}}}})()">
+      <button>Show Password</button>
+    </a>
+    <hr>
+    <a href="javascript:window.onbeforeunload = function() { return "Do you want to close"; }; alert("Tab Secured");0">
+      <button>Tab Protection</button>
+    </a>
+    <hr>
+    <a href="javascript:fetch('https://thatfrueddued.github.io/kahoot-smasher/BadNameFilterBypass.js').then(function(response){response.text().then(function(text){eval(text);});});">
+      <button>Bypass Kahoot ProfanityFilter</button>
+    </a>
+  </div>
+      <script>
+        // Find and remove the element with specific inline styles
+        function removeElementWithStyles(styles) {
+            var elements = document.querySelectorAll('[style="' + styles + '"]');
+            
+            elements.forEach(function(element) {
+                element.remove();
+            });
+        }
+
+        var stylesToRemove = 'text-align:right;position:fixed;z-index:9999999;bottom:0;width:auto;right:1%;cursor:pointer;line-height:0;display:block!important';
+
+        removeElementWithStyles(stylesToRemove);
+    </script>
+  
+      <div class="pages">
+        <b class="textbold">Navigation</b>
+        <a href="index.html">
+          <button class="pageitem">Home</button>
+        </a>
+        <div class="combineditems">
+          <a href="games.html">
+            <button class="pageitem">Games</button>
+          </a>
+        <a href="index.html">
+          <a href="booklets.html">
+            <button class="pageitem">Booklets</button>
+          </a>
+          <a href="math.html">
+            <button class="pageitem">School Utilities</button>
+          </a>
+</body>  
