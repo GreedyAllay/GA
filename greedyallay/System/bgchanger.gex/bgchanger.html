@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Background Changer</title>
+  <style>
+    img {
+      width: 200px;
+      height: 112.5px; /* 16:9 Aspect Ratio */
+      object-fit: cover; /* Crop the image to fit the container */
+      cursor: pointer;
+      border-radius: 5px; /* Add a border radius of 5px */
+      border: 2px solid transparent; /* Add a transparent border */
+      background-color: aliceblue;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 200px);
+      grid-gap: 10px;
+    }
+    .grid-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #uploadImage {
+      cursor: pointer;
+      width: 200px;
+      height: 112.5px; /* 16:9 Aspect Ratio */
+      border: 2px dashed #aaaaaa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 1; /* Make the custom upload button visible */
+    }
+    #uploadImage::before {
+      content: "Add Image";
+    }
+    .delete-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-weight: bold;
+      color: red;
+      cursor: pointer;
+    }
+    body {
+      transition: background 0.5s ease-in-out; /* Fade transition for background changes */
+      font-family: fantasy;
+    }
+  </style>
+</head>
+<body>
+  <h1>Click on an image to change the background:</h1>
+  <div class="grid-container" id="image-container">
+    <!-- Add more images here -->
+  </div>
+
+  <div class="grid-item">
+    <label for="uploadImage" class="custom-upload-btn">
+      <!-- Empty label to hide the text -->
+    </label>
+    <input type="file" id="uploadImage" accept="image/*" onchange="addCustomImage()" />
+  </div>
+
+  <script>
+    const images = JSON.parse(localStorage.getItem("uploadedImages")) || [];
+
+    function changeBackground(imgElement) {
+      const imageUrl = imgElement.src;
+      window.parent.postMessage(
+        { action: "changeBackground", imageUrl: imageUrl },
+        "*"
+      );
+    }
+
+    function addDeleteIcon(imageElement) {
+      const deleteIcon = document.createElement("div");
+      deleteIcon.textContent = "X";
+      deleteIcon.className = "delete-icon";
+      deleteIcon.addEventListener("click", function(event) {
+        event.stopPropagation();
+        const imageUrl = imageElement.src;
+        const index = images.indexOf(imageUrl);
+        if (index !== -1) {
+          images.splice(index, 1);
+          localStorage.setItem("uploadedImages", JSON.stringify(images));
+          imageElement.parentElement.removeChild(imageElement);
+        }
+      });
+      imageElement.parentElement.appendChild(deleteIcon);
+    }
+
+    function addCustomImage() {
+      const uploadInput = document.getElementById("uploadImage");
+      const file = uploadInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const imageUrl = event.target.result;
+          const newImg = document.createElement("img");
+          newImg.src = imageUrl;
+          newImg.onclick = function() {
+            changeBackground(this);
+          };
+          const imageContainer = document.getElementById("image-container");
+          const gridItem = document.createElement("div");
+          gridItem.className = "grid-item";
+          gridItem.appendChild(newImg);
+          imageContainer.insertBefore(gridItem, imageContainer.lastElementChild);
+          addDeleteIcon(newImg); // Add delete icon for the newly added image
+          changeBackground(newImg);
+
+          images.push(imageUrl);
+          localStorage.setItem("uploadedImages", JSON.stringify(images));
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Load images from local storage on page load
+    window.addEventListener("load", function() {
+      const imageContainer = document.getElementById("image-container");
+      images.forEach(function(imageUrl) {
+        const newImg = document.createElement("img");
+        newImg.src = imageUrl;
+        newImg.onclick = function() {
+          changeBackground(this);
+        };
+        const gridItem = document.createElement("div");
+        gridItem.className = "grid-item";
+        gridItem.appendChild(newImg);
+        imageContainer.insertBefore(gridItem, imageContainer.lastElementChild);
+        addDeleteIcon(newImg); // Add delete icon for the loaded image
+      });
+    });
+  </script>
+</body>
+</html>
