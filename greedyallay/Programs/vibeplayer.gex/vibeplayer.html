@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Music Player App</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .app-container {
+      width: 100%;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      height: 90%;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .music-list {
+      margin-top: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    li:hover {
+      background-color: #f0f0f0;
+    }
+
+    #upload-button {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    #ellipsis-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      width: 80%;
+      max-width: 400px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Additional styles for equalizer */
+    #equalizer-modal .slider-container {
+      margin-top: 20px;
+    }
+
+    #equalizer-modal .slider-container label {
+      display: inline-block;
+      width: 100px;
+    }
+
+    #equalizer-modal .slider {
+      width: 200px;
+    }
+    .player {
+        width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <audio class="player" id="audio-player" controls></audio>
+    <div class="music-list">
+      <h3>Recent</h3>
+      <ul id="music-list"></ul>
+      <button id="upload-button">Upload Music</button>
+    </div>
+  </div>
+
+  <!-- 3-dot button -->
+  <div id="ellipsis-button">&#8942;</div>
+
+  <!-- Equalizer Modal -->
+  <div class="modal" id="equalizer-modal">
+    <div class="modal-content">
+      <h2>Equalizer</h2>
+      <div class="slider-container">
+        <label for="bass-slider">Bass</label>
+        <input type="range" id="bass-slider" class="slider" min="-12" max="12" step="0.1" value="0">
+      </div>
+      <div class="slider-container">
+        <label for="treble-slider">Treble</label>
+        <input type="range" id="treble-slider" class="slider" min="-12" max="12" step="0.1" value="0">
+      </div>
+      <button onclick="closeEqualizer()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const audioPlayer = document.getElementById('audio-player');
+    const musicList = document.getElementById('music-list');
+    const uploadButton = document.getElementById('upload-button');
+    const ellipsisButton = document.getElementById('ellipsis-button');
+    const equalizerModal = document.getElementById('equalizer-modal');
+    const bassSlider = document.getElementById('bass-slider');
+    const trebleSlider = document.getElementById('treble-slider');
+    let bassGain = 0;
+    let trebleGain = 0;
+
+    // Update bass and treble gains when sliders are adjusted
+    bassSlider.addEventListener('input', () => {
+      bassGain = parseFloat(bassSlider.value);
+      applyEqualizer();
+    });
+
+    trebleSlider.addEventListener('input', () => {
+      trebleGain = parseFloat(trebleSlider.value);
+      applyEqualizer();
+    });
+
+    // Apply equalizer effect on the audio
+    function applyEqualizer() {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const source = audioContext.createMediaElementSource(audioPlayer);
+      const bass = audioContext.createBiquadFilter();
+      const treble = audioContext.createBiquadFilter();
+      const destination = audioContext.destination;
+
+      bass.type = 'lowshelf';
+      bass.frequency.value = 200; // Adjust the bass frequency as needed
+      bass.gain.value = bassGain;
+
+      treble.type = 'highshelf';
+      treble.frequency.value = 2000; // Adjust the treble frequency as needed
+      treble.gain.value = trebleGain;
+
+      source.connect(bass);
+      bass.connect(treble);
+      treble.connect(destination);
+    }
+
+    // Apply the equalizer effect when the audio player is ready
+    audioPlayer.addEventListener('canplay', applyEqualizer);
+
+  // Load saved music from local storage on page load
+  window.addEventListener('load', () => {
+    loadSavedMusic();
+    addPresetSong(); // Add the preset song when the page loads
+  });
+
+  // Function to add the preset song to the music list
+  function addPresetSong() {
+    const presetSongName = 'Greedy Vibe';
+    const presetSongURL = 'Music/GreedyVibe.wav'; // Update the path to your preset song
+    addMusicToList(presetSongName, presetSongURL);
+  }
+
+  // Add event listener to play selected music
+  musicList.addEventListener('click', (event) => {
+    if (event.target.tagName === 'LI') {
+      const musicURL = event.target.dataset.url;
+      if (musicURL) {
+        audioPlayer.src = musicURL;
+        audioPlayer.play(); // Play the selected song
+
+        // Reset the equalizer sliders to default values
+        bassSlider.value = 0;
+        trebleSlider.value = 0;
+      }
+    }
+  });
+    // Add event listener to play selected music
+    musicList.addEventListener('click', (event) => {
+      if (event.target.tagName === 'LI') {
+        const musicURL = event.target.dataset.url;
+        if (musicURL) {
+          audioPlayer.src = musicURL;
+          audioPlayer.play();
+        }
+      }
+    });
+  // Function to add the preset song to the music list
+  function addPresetSong() {
+    const presetSongName = 'Greedy Vibe';
+    const presetSongURL = 'Music/GreedyVibe.mp3'; // Update the path to your preset song
+    addMusicToList(presetSongName, presetSongURL);
+  }
+
+
+
+    // Handle file upload and saving to local storage
+    uploadButton.addEventListener('click', () => {
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'audio/*';
+      fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const musicURL = event.target.result;
+          saveMusicToLocalStorage(file.name, musicURL);
+          addMusicToList(file.name, musicURL);
+        };
+        reader.readAsDataURL(file);
+      });
+      fileInput.click();
+    });
+
+    function loadSavedMusic() {
+      const savedMusic = JSON.parse(localStorage.getItem('music') || '[]');
+      savedMusic.forEach((music) => {
+        addMusicToList(music.name, music.url);
+      });
+    }
+
+    function saveMusicToLocalStorage(name, url) {
+      const savedMusic = JSON.parse(localStorage.getItem('music') || '[]');
+      savedMusic.push({ name, url });
+      localStorage.setItem('music', JSON.stringify(savedMusic));
+    }
+
+    function addMusicToList(name, url) {
+      const listItem = document.createElement('li');
+      listItem.textContent = name;
+      listItem.dataset.url = url;
+      musicList.appendChild(listItem);
+    }
+
+    ellipsisButton.addEventListener('click', () => {
+      equalizerModal.style.display = 'flex';
+    });
+
+    function closeEqualizer() {
+      equalizerModal.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
