@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Embed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .embed {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #e0f7fa;
+        }
+        .embed img {
+            max-width: 100px;
+            float: right;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="embed" class="embed" style="display: none;">
+        <h1 id="embedTitle"></h1>
+        <p id="embedDescription"></p>
+        <a id="embedUrl" href="#" target="_blank">Visit</a>
+        <img id="embedImage" src="" alt="Embed Image">
+    </div>
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                title: params.get('title'),
+                description: params.get('description'),
+                url: params.get('url'),
+                image: params.get('image')
+            };
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = getQueryParams();
+            console.log(params); // Debug: log params to ensure they are correctly parsed
+            if (params.title && params.description && params.url && params.image) {
+                document.getElementById('embedTitle').textContent = params.title;
+                document.getElementById('embedDescription').textContent = params.description;
+                document.getElementById('embedUrl').href = params.url;
+                document.getElementById('embedUrl').textContent = 'Visit';
+                document.getElementById('embedImage').src = params.image;
+                document.getElementById('embed').style.display = 'block';
+            } else {
+                console.error("Missing parameters"); // Debug: log an error if parameters are missing
+            }
+        });
+    </script>
+</body>
+</html>

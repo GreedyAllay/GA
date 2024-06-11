@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVX1081 Page Viewer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            padding: 10px 20px;
+            background-color: var(--main-color, #13d6b6);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            margin-top: 20px;
+            position: relative;
+        }
+        h1 {
+            margin: 0;
+            font-size: 1.5em;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .description {
+            margin: 20px 20px;
+            font-size: 1em;
+            color: #555;
+            max-width: 1200px;
+            text-align: center;
+            line-height: 1.5;
+        }
+        .iframe-container {
+            width: 90%;
+            max-width: 1200px;
+            height: 80vh;
+            border: 2px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .back-button {
+            padding: 10px 20px;
+            background-color: white;
+            color: var(--main-color, #13d6b6);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #f1f1f1;
+            color: #0f9e85;
+        }
+        .button-group {
+            display: flex;
+            align-items: center;
+        }
+        .theme-toggle, .color-button {
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 12px;
+            background-color: white;
+            color: var(--main-color, #13d6b6);
+            transition: background-color 0.3s, color 0.3s;
+            margin-left: 10px;
+        }
+        .theme-toggle:hover, .color-button:hover {
+            background-color: #f1f1f1;
+            color: #0f9e85;
+        }
+        .color-palette {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .color-square {
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 6px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+        .color-square:hover {
+            transform: scale(1.1);
+        }
+        .dark-theme {
+            background-color: #333;
+            color: #f4f4f9;
+        }
+        .dark-theme .iframe-container {
+            border-color: #555;
+        }
+        .dark-theme .description {
+            color: #ccc;
+        }
+        .dark-theme header {
+            background-color: var(--main-color-dark, #114e44);
+        }
+        .dark-theme .back-button {
+            background-color: #222;
+            color: var(--main-color, #13d6b6);
+        }
+        .dark-theme .back-button:hover {
+            background-color: #333;
+            color: #0f9e85;
+        }
+        .dark-theme .theme-toggle, .dark-theme .color-button {
+            background-color: #222;
+            color: var(--main-color, #13d6b6);
+        }
+        .dark-theme .theme-toggle:hover, .dark-theme .color-button:hover {
+            background-color: #333;
+            color: #0f9e85;
+        }
+        .dark-theme .color-palette {
+            background-color: #444;
+            border-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="https://greedy-allay.github.io/GreedyAllay/" class="back-button">See other cool stuff</a>
+        <h1>MinecraftVoiceControlX (totally not a sketchy name lol)</h1>
+        <div class="button-group">
+            <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
+            <div class="color-button" onclick="toggleColorPalette()">🎨</div>
+        </div>
+    </header>
+    <div class="description">
+        A simple program that utilizes the PenguinGPT extension made by Mubilop to implement ChatGPT into Minecraft! Only requires one mod, called <a href="https://modrinth.com/mod/webcommands/version/1.6-SNAPSHOT-1.20.2-pre2" target="_blank">Webcommands</a>.
+    </div>
+    <div class="iframe-container">
+        <iframe src="MVX1081.html"></iframe>
+    </div>
+    <div class="color-palette" id="colorPalette">
+        <div class="color-square" style="background-color: #13d6b6;" onclick="changeColor('#13d6b6', '#114e44')"></div>
+        <div class="color-square" style="background-color: #ff6f61;" onclick="changeColor('#ff6f61', '#b54940')"></div>
+        <div class="color-square" style="background-color: #6a5acd;" onclick="changeColor('#6a5acd', '#483d8b')"></div>
+        <div class="color-square" style="background-color: #ffa500;" onclick="changeColor('#ffa500', '#cc8400')"></div>
+        <div class="color-square" style="background-color: #32cd32;" onclick="changeColor('#32cd32', '#228b22')"></div>
+    </div>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const toggle = document.querySelector('.theme-toggle');
+            if (document.body.classList.contains('dark-theme')) {
+                toggle.textContent = '☀️';
+            } else {
+                toggle.textContent = '🌙';
+            }
+            localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+        }
+
+        function toggleColorPalette() {
+            const palette = document.getElementById('colorPalette');
+            palette.style.display = palette.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function changeColor(mainColor, darkColor) {
+            document.documentElement.style.setProperty('--main-color', mainColor);
+            document.documentElement.style.setProperty('--main-color-dark', darkColor);
+            localStorage.setItem('mainColor', mainColor);
+            localStorage.setItem('mainColorDark', darkColor);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.querySelector('.theme-toggle').textContent = '☀️';
+            }
+            const savedMainColor = localStorage.getItem('mainColor');
+            const savedMainColorDark = localStorage.getItem('mainColorDark');
+            if (savedMainColor && savedMainColorDark) {
+                document.documentElement.style.setProperty('--main-color', savedMainColor);
+                document.documentElement.style.setProperty('--main-color-dark', savedMainColorDark);
+            }
+        });
+    </script>
+</body>
+</html>

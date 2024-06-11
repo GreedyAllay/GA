@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Embed Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Custom Embed Generator</h1>
+    <form id="embedForm">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="url">URL</label>
+            <input type="url" id="url" name="url" required>
+        </div>
+        <div class="form-group">
+            <label for="image">Image URL</label>
+            <input type="url" id="image" name="image" required>
+        </div>
+        <button type="submit">Generate Link</button>
+    </form>
+    <div id="result" class="result" style="display: none;"></div>
+
+    <script>
+        document.getElementById('embedForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const title = encodeURIComponent(document.getElementById('title').value);
+            const description = encodeURIComponent(document.getElementById('description').value);
+            const url = encodeURIComponent(document.getElementById('url').value);
+            const image = encodeURIComponent(document.getElementById('image').value);
+
+            const link = `${window.location.origin}/embed-display.html?title=${title}&description=${description}&url=${url}&image=${image}`;
+
+            document.getElementById('result').innerHTML = `<p>Share this link:</p><a href="${link}">${link}</a>`;
+            document.getElementById('result').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
