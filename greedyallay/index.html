@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resizable and Movable Window</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-image: url('System/bgchanger.gex/backgrounds/Jellyfish_HD.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Product Sans;
+            transition: background 0.5s ease-in-out; /* Fade transition for background changes */
+        }
+
+        .window {
+            width: 1080px;
+            height: 720px;
+            background-color:rgba(37, 42, 71, 0.212);
+            border-radius: 10px;
+            user-select: none;
+            backdrop-filter: blur(5px); /* Add slight blur */
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow */
+            animation: fadeInOut 0.2s;
+            position: absolute; /* Make the window position relative */
+        }
+
+        .iframe-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allow mouse events to pass through the overlay */
+        }
+
+        @keyframes fadeInOut {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .closing {
+            animation: fadeOut 0.2s;
+            pointer-events: none; /* Disable pointer events during the fade-out animation */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+
+        .top-bar {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+            padding: 1px;
+            cursor: move;
+            display: flex;
+            align-items: center;
+            border-top-left-radius: 10px; /* Rounded top-left corner */
+            border-top-right-radius: 10px; /* Rounded top-right corner */
+            backdrop-filter: blur(5px); /* Add blur to top bar */
+        }
+
+        .title {
+            margin: 0;
+            margin-left: 8px;
+            color: white; /* Title color set to white */
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            background-image: url('path-to-your-icon.png');
+            background-repeat: no-repeat;
+            margin-left: 10px;
+        }
+
+        .close-button {
+            cursor: pointer;
+            margin-left: auto;
+            padding: 4px;
+            border-radius: 50%;
+            background-color: transparent;
+            border: 5px solid rgba(255, 0, 0, 0.159);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            color: red;
+            transition: border-radius, background-color 0.3s;
+            transition: background-color 0.3s;
+
+        }
+
+        .close-button:hover {
+            background-color: red;
+            color: white;
+            border-radius: 25%;
+            transition: border-radius, background-color 0.3s;
+        }
+
+        .resizable-handle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #007bff1a;
+            bottom: 0;
+            right: 0;
+            cursor: nwse-resize;
+            border-bottom-right-radius: 10px; /* Rounded bottom-right corner */
+        }
+
+        .resizable-handle:hover {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            bottom: 0;
+            right: 0;
+            cursor: nwse-resize;
+            border-bottom-right-radius: 10px; /* Rounded bottom-right corner */
+            transition: background-color 0.1s;
+        }
+
+        .background-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        iframe {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Additional style for the icons */
+        .icon-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+            cursor: pointer;
+            background-color: rgba(73, 85, 156, 0.595);
+            border-radius: 10px;
+            margin: 10px;
+        }
+
+        .icon-image {
+            width: 32px;
+            height: 32px;
+            background-size:contain;
+            background-repeat: no-repeat;
+            margin-top: 15px;
+            margin-right: 20px;
+            margin-left: 15px;
+        }
+
+        .icon-text {
+            margin-top: 5px;
+            color: white;
+            text-align: center;
+            margin-right: 5px;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none; /* Initially hide the overlay */
+            z-index: 0; /* Place the overlay above other elements */
+        }
+                /* Custom button styles */
+                #primaryButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 5px 10px;
+            background-color: #0078D4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Card styles */
+        #card {
+            position: fixed;
+            top: 50%;
+            right: -300px;
+            width: 300px;
+            height: 100%; /* Changed to 100% to reset height during close animation */
+            background-color: #F1F1F1;
+            color: #000;
+            transition: right 0.3s ease, border-radius 0.3s ease, height 0.3s ease, transform 0.3s ease, background-color 0.3s ease, filter 0.3s ease, opacity 0.3s ease; /* Added opacity and removed blur animation during close */
+            padding: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            transform: translateY(-50%); /* Center the card on the Y-axis */
+        }
+
+        /* Card styles when it is open */
+        #card.open {
+            right: 0;
+            border-radius: 10px;
+            height: 95%;
+            background-color: #451991b2;
+            backdrop-filter: blur(5px); /* Apply the blur effect when the card is open */
+            opacity: 1; /* Reset opacity during open animation */
+        }
+
+        /* Card styles when it is closing */
+        #card.closing {
+            right: -300px;
+            height: 100%; /* Reset height during close animation */
+            background-color: #F1F1F1;
+            filter: blur(0); /* Reset blur during close animation */
+            opacity: 0.75; /* Add 75% transparency during close animation */
+            border-radius: 0; /* Remove rounded corners during close animation */
+        }
+
+        /* App icons styles */
+        #appIcons {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        #appIcons > div {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0078D4;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: absolute;
+            display: none;
+            padding: 5px;
+            background-color: #000;
+            color: #fff;
+            border-radius: 5px;
+            pointer-events: none; /* Prevent the tooltip from blocking mouse events */
+        }
+
+        /* Search bar styles */
+        #searchBar {
+            width: 100%;
+            padding: 5px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    <div class="window" id="movableWindow">
+        <div class="top-bar" id="windowTopBar">
+            <div class="icon"></div>
+            <h2 class="title">Welcome!</h2>
+            <div class="close-button" id="closeButton">
+                <img src="Icons/close.svg" alt="Close">
+            </div>
+        </div>
+        <div class="content">
+            <div class="iframe-overlay"></div> <!-- Add an overlay for iframe -->
+            <h1>Welcome to GreedyOS</h1>
+            <h3>A whopping light operating system that runs on a browser</h3>
+            (and that's basically all it is)
+        </div>
+
+        <div class="resizable-handle" id="resizableHandle"></div>
+    </div>
+    <!-- Primary button at the bottom right -->
+    <button id="primaryButton">Start</button>
+
+    <div id="card">
+        <input type="text" id="searchBar" placeholder="Search...">
+        <div id="appIcons">
+            <!-- App icons will be added dynamically using JavaScript -->
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+
+    <!-- Script section -->
+    <script>
+        let zIndexCounter = 1;
+        let resizing = false;
+        let iframe = document.getElementById('iframe');
+
+    // Function to make the window resizable
+    function makeWindowResizable(windowElement, resizableHandle) {
+        resizableHandle.addEventListener('mousedown', (event) => {
+            resizing = true;
+            startX = event.clientX;
+            startY = event.clientY;
+            startWidth = parseInt(window.getComputedStyle(windowElement).width);
+            startHeight = parseInt(window.getComputedStyle(windowElement).height);
+        });
+
+        window.addEventListener('mouseup', () => {
+            resizing = false; // Stop resizing
+        });
+
+        window.addEventListener('mousemove', (event) => {
+            if (resizing) {
+                const offsetX = event.clientX - startX;
+                const offsetY = event.clientY - startY;
+                windowElement.style.width = `${startWidth + offsetX}px`;
+                windowElement.style.height = `${startHeight + offsetY}px`;
+                iframe.style.height = `${startHeight + offsetY - 28}px`;
+            }
+        });
+    }
+
+        let activeWindow = null; // Keep track of the active window being dragged
+
+        function makeWindowMovable(windowElement, topBarElement) {
+            let offset = { x: 0, y: 0 };
+
+            topBarElement.addEventListener('mousedown', (event) => {
+                activeWindow = windowElement; // Set the active window when starting to drag
+                offset.x = event.clientX - windowElement.offsetLeft;
+                offset.y = event.clientY - windowElement.offsetTop;
+                const overlay = windowElement.querySelector('.overlay'); // Get the overlay for the specific window
+                overlay.style.display = 'block'; // Show the overlay
+
+                // Bring the window to front by adjusting z-index
+                zIndexCounter += 1;
+                windowElement.style.zIndex = zIndexCounter;
+            });
+
+            window.addEventListener('mousemove', (event) => {
+                if (activeWindow === windowElement) { // Apply overlay only to the active window
+                    // Move the window
+                    windowElement.style.left = (event.clientX - offset.x) + 'px';
+                    windowElement.style.top = (event.clientY - offset.y) + 'px';
+                }
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (activeWindow === windowElement) { // Apply overlay only to the active window
+                    activeWindow = null; // Reset active window when dragging stops
+                    const overlay = windowElement.querySelector('.overlay'); // Get the overlay for the specific window
+                    overlay.style.display = 'none'; // Hide the overlay
+                }
+            });
+        }
+
+        window.addEventListener('mousemove', (event) => {
+            if (resizing && activeWindow) {
+                const offsetX = event.clientX - startX;
+                const offsetY = event.clientY - startY;
+                activeWindow.style.width = `${startWidth + offsetX}px`;
+                activeWindow.style.height = `${startHeight + offsetY}px`;
+                iframe.style.height = `${startHeight + offsetY - 28}px`;
+            }
+        });
+
+
+
+        // Function to handle close button click
+        function handleCloseButtonClick() {
+            const movableWindow = document.getElementById('movableWindow');
+            movableWindow.classList.add('closing'); // Add the closing class for the fade-out animation
+            setTimeout(() => {
+                movableWindow.style.display = 'none';
+                movableWindow.classList.remove('closing'); // Remove the closing class after the animation completes
+            }, 200); // Wait for the fade-out animation to complete (same duration as the animation)
+        }
+
+        // Function to create a new window with a given title and content
+        function createNewWindow(title, content, icon, width, height) {
+            const newWindow = document.createElement('div');
+            newWindow.className = 'window';
+            newWindow.style.left = '100px'; // Set initial position (you can adjust this as desired)
+            newWindow.style.top = '100px';
+            newWindow.innerHTML = `
+            <div class="overlay" id="overlay"></div>
+                <div class="top-bar">
+                    <div class="icon"><img src="Icons/${icon}"></div>
+                    <h2 class="title">${title}</h2>
+                    <div class="close-button">
+                        <img src="Icons/close.svg" alt="Close">
+                    </div>
+                </div>
+                <div class="content">
+                    ${content}
+                    </div>
+                <div class="resizable-handle"></div>
+            `;
+
+            document.body.appendChild(newWindow);
+            makeWindowMovable(newWindow, newWindow.querySelector('.top-bar'));
+            makeWindowResizable(newWindow, newWindow.querySelector('.resizable-handle'));
+
+            // Add event listener to close button of the new window
+            const newCloseButton = newWindow.querySelector('.close-button');
+            newCloseButton.addEventListener('click', () => {
+                newWindow.classList.add('closing'); // Add the closing class for the fade-out animation
+                setTimeout(() => {
+                    newWindow.style.display = 'none';
+                    newWindow.classList.remove('closing'); // Remove the closing class after the animation completes
+                }, 200); // Wait for the fade-out animation to complete (same duration as the animation)
+            });
+        }
+
+        // Call the functions to make the window movable and resizable
+        const movableWindow = document.getElementById('movableWindow');
+        const windowTopBar = document.getElementById('windowTopBar');
+        const resizableHandle = document.getElementById('resizableHandle');
+        makeWindowMovable(movableWindow, windowTopBar);
+        makeWindowResizable(movableWindow, resizableHandle);
+
+        // Add event listener to close button
+        const closeButton = document.getElementById('closeButton');
+        closeButton.addEventListener('click', handleCloseButtonClick);
+
+        window.addEventListener("message", function (event) {
+      if (event.data.action === "changeBackground") {
+        document.body.style.backgroundImage = `url(${event.data.imageUrl})`;
+      }
+    });
+
+    //taskbar
+
+            // JavaScript code
+            const primaryButton = document.getElementById('primaryButton');
+        const card = document.getElementById('card');
+        const tooltip = document.getElementById('tooltip');
+
+        function showCard() {
+            // Slide in the card from the right
+            card.classList.add('open');
+            let cardVisible = true
+        }
+
+        function hideCard() {
+            if (cardVisible = true) {
+            // Slide out the card to the right
+            card.classList.remove('open');
+            card.classList.add('closing');
+            setTimeout(() => {
+                card.classList.remove('closing');
+                let cardVisible = false
+            });}
+        }
+
+        function handleControlKey(event) {
+            // Show/hide the card when Ctrl key is pressed
+            if (event.key === 'Control' || event.ctrlKey) {
+                if (card.classList.contains('open')) {
+                    hideCard();
+                } else {
+                    showCard();
+                }
+            }
+        }
+
+        function handleMouseMove(event) {
+            // Show the card when the mouse is at the maximum X value of the screen
+            const maxX = window.innerWidth;
+            const mouseX = event.clientX;
+
+            if (mouseX >= maxX) {
+                showCard();
+            }
+        }
+
+        function handleMouseLeave() {
+            // Hide the card when the mouse leaves the screen
+            hideCard();
+        }
+
+        function handleCardButtonClick() {
+            // Hide the card when a button on the card gets pressed
+            hideCard();
+        }
+
+        function handleDocumentClick(event) {
+            // Hide the card when clicking anywhere except for the card or the primary button
+            if (!card.contains(event.target) && event.target !== primaryButton) {
+                hideCard();
+            }
+        }
+
+        function showTooltip(event) {
+            // Show the tooltip with the app name when the button is hovered
+            const appName = event.target.getAttribute('data-appname');
+            tooltip.innerText = appName;
+            tooltip.style.display = 'block';
+            tooltip.style.left = `${event.clientX + 10}px`;
+            tooltip.style.top = `${event.clientY + 10}px`;
+        }
+
+        function hideTooltip() {
+            // Hide the tooltip when the mouse leaves the button
+            tooltip.style.display = 'none';
+        }
+
+        primaryButton.addEventListener('click', showCard);
+        document.addEventListener('keydown', handleControlKey); // Changed to Control key
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseleave', handleMouseLeave);
+        document.addEventListener('click', handleDocumentClick);
+
+        // Simulate the app list (replace this with your actual app list)
+        const apps = [
+            {
+                name: 'Information',
+                icon: 'Icons/info.svg',
+                width: '300',
+                height: '200',
+                script: "createNewWindow('Change Background', '<iframe src=\'Programs/bgchanger.gex/bgchanger.html\' width=\'50%\' height=\'100%\'></iframe>', 'default.svg', '300', '200')"
+            },
+            
+            {
+                name: 'Change Background',
+                icon: 'Icons/default.svg',
+                width: '300',
+                height: '200',
+                script: "createNewWindow('About GreedyOS', 'GreedyOS Is a fully web-based Operating System that can do very basic tasks, such as imitating a real desktop environment, display whatever you want in a window and much more. It is technically possible to download the Operating System, and modify the files. The windows usually run from an html that is inside of a folder that usually ends with the .gex file extension. It is also possible to compress apps and mods to send it to other people which can then extract it and drop in their own GreedyOS. (.gex stands for Greedy Executable, or Greedy Allay Executable.)  Though, GreedyOS has its fair share of bugs, for instance, resizing and moving windows may be extremely painful when you move your mose downwards, because the iframe will capture your mouse, making it (yet) impossible to track the mouse, and stops. Also windows keep playing audio, they actually do not get closed, only invisible, which is not only badly optimized, but also really annoying because when you close a playing window, it will be impossible to stop it, other than reloading the page.', 'info.svg', '347823', '2134234')"
+            },
+            // Add more apps with similar structures if needed
+            // {
+            //    name: 'App Name',
+            //    icon: 'app_icon.svg',
+            //    width: '400',
+            //    height: '300',
+            //    script: "Your JavaScript function here"
+            // }
+        ];
+
+        // Function to generate app icons
+        function generateAppIcons() {
+            const appIconsHTML = apps.map(app => `
+                <div data-appname="${app.name}" onmouseenter="showTooltip(event)" onmouseleave="hideTooltip()">
+                    <a href="#"><img src="${app.icon}" alt="${app.name}"></a>
+                </div>
+            `).join('');
+
+            return appIconsHTML;
+        }
+
+        // Function to handle search
+        function handleSearch(event) {
+            const searchTerm = event.target.value.toLowerCase();
+            const appIcons = document.querySelectorAll('#appIcons div');
+            
+            appIcons.forEach(icon => {
+                const appName = icon.getAttribute('data-appname').toLowerCase();
+                if (appName.includes(searchTerm)) {
+                    icon.style.display = 'flex';
+                } else {
+                    icon.style.display = 'none';
+                }
+            });
+        }
+
+        // Add app icons and search bar to the card
+        const cardContent = `
+            <input type="text" id="searchBar" placeholder="Search...">
+            <div id="appIcons">
+                ${generateAppIcons()}
+            </div>
+        `;
+
+        card.innerHTML = cardContent;
+
+        // Add event listener for search functionality
+        const searchBar = document.getElementById('searchBar');
+        searchBar.addEventListener('input', handleSearch);
+        
+        // Add event listener for mouse movement
+        document.addEventListener('mousemove', handleMouseMove);
+    </script>
+    
+    </script>
+
+    <!-- Icons on the home screen -->
+    <div style="position: absolute; top: 250px; left: 40px;" class="icon-container" onclick="createNewWindow('Change Background', '<iframe src=\'System/bgchanger.gex/bgchanger.html\' width=\'50%\' height=\'100%\'></iframe>', 'default.svg', '300', '200')">
+        <div class="icon-image" style="background-image: url('Icons/defaultwide.svg');"></div>
+        <div class="icon-text">Background Changer</div>
+    </div>
+
+    <div style="position: absolute; top: 350px; left: 40px;" class="icon-container" onclick="createNewWindow('About GreedyOS', 'GreedyOS Is a fully web-based Operating System that can do very basic tasks, such as imitating a real desktop environment, display whatever you want in a window and much more. It is technically possible to download the Operating System, and modify the files. The windows usually run from an html that is inside of a folder that usually ends with the .gex file extension. It is also possible to compress apps and mods to send it to other people which can then extract it and drop in their own GreedyOS. (.gex stands for Greedy Executable, or Greedy Allay Executable.)  Though, GreedyOS has its fair share of bugs, for instance, resizing and moving windows may be extremely painful when you move your mose downwards, because the iframe will capture your mouse, making it (yet) impossible to track the mouse, and stops. Also windows keep playing audio, they actually do not get closed, only invisible, which is not only badly optimized, but also really annoying because when you close a playing window, it will be impossible to stop it, other than reloading the page.', 'info.svg', '347823', '2134234')">
+        <div class="icon-image" style="background-image: url('Icons/info.svg');"></div>
+        <div class="icon-text">Information</div>
+    </div>
+
+    <div style="position: absolute; top: 450px; left: 40px;" class="icon-container" onclick="createNewWindow('Text Editor', '<iframe src=\'Programs/texteditor.gex/texteditor.html\' width=\'100%\' height=\'100%\'></iframe>', 'default.svg')">
+        <div class="icon-image" style="background-image: url('Icons/texteditor.svg');"></div>
+        <div class="icon-text">Text Editor</div>
+    </div>
+
+    <div style="position: absolute; top: 550px; left: 40px;" class="icon-container" onclick="createNewWindow('Greedy Calculator', '<iframe src=\'Programs/calculator.gex/calc.html\' width=\'100%\' height=\'100%\'></iframe>', 'calculator.svg')">
+        <div class="icon-image" style="background-image: url('Icons/calculator.svg');"></div>
+        <div class="icon-text">Calculator</div>
+    </div>
+
+    <div style="position: absolute; top: 650px; left: 40px;" class="icon-container" onclick="createNewWindow('Allay Media Player', '<iframe src=\'Programs/greedymediaplayer.gex/mediaplayer.html\' width=\'100%\' height=\'100%\'></iframe>', 'default.svg')">
+        <div class="icon-image" style="background-image: url('Icons/defaultwide.svg');"></div>
+        <div class="icon-text">Media Player</div>
+    </div>
+
+    <div style="position: absolute; top: 750px; left: 40px;" class="icon-container" onclick="createNewWindow('Bing', '<iframe src=\'https://www.bing.com\' width=\'100%\' height=\'100%\'></iframe>', 'bing.svg')">
+        <div class="icon-image" style="background-image: url('Icons/bing.svg');"></div>
+        <div class="icon-text">Bing</div>
+    </div>
+
+    <div style="position: absolute; top: 850px; left: 40px;" class="icon-container" onclick="createNewWindow('VibePlayer', '<iframe src=\'Programs/vibeplayer.gex/vibeplayer.html\' width=\'100%\' height=\'100%\'></iframe>', 'default.svg')">
+        <div class="icon-image" style="background-image: url('Icons/defaultwide.svg');"></div>
+        <div class="icon-text">VibePlayer</div>
+    </div>
+
+    <div style="position: absolute; top: 950px; left: 40px;" class="icon-container" onclick="createNewWindow('Clock', '<iframe src=\'Programs/clock.gex/clock.html\' width=\'100%\' height=\'100%\'></iframe>', 'clock.svg')">
+        <div class="icon-image" style="background-image: url('Icons/clock.svg');"></div>
+        <div class="icon-text">Clock</div>
+    </div>
+
+    <div style="position: absolute; top: 1050px; left: 40px;" class="icon-container" onclick="createNewWindow('Greedy Allays Official Game Library', '<iframe src=\'Programs/gamelauncher.gex/launcher.html\' width=\'100%\' height=\'100%\'></iframe>', 'galogo.svg')">
+        <div class="icon-image" style="background-image: url('Icons/galogo.svg');"></div>
+        <div class="icon-text">UNFINISHED</div>
+    </div>
+
+    <div style="position: absolute; top: 1150px; left: 40px;" class="icon-container" onclick="createNewWindow('Battery', '<iframe src=\'System/Battery.gex/battery.html\' width=\'100%\' height=\'100%\'></iframe>', 'default.svg')">
+        <div class="icon-image" style="background-image: url('Icons/galogo.svg');"></div>
+        <div class="icon-text">Battery</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parent HTML</title>
+    <script>
+        function loadFile() {
+            var fileName = document.getElementById("filename").value;
+            fetch("load_file.php?filename=" + encodeURIComponent(fileName))
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("textarea").value = data;
+                })
+                .catch(error => {
+                    document.getElementById("textarea").value = "File not found or error loading.";
+                });
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="filename" placeholder="Enter file name">
+    <button onclick="loadFile()">Load File</button>
+    <br>
+    <textarea id="textarea" rows="10" cols="50"></textarea>
+</body>
+</html>

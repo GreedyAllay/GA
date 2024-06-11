@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Box Spawner with Physics</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+  }
+  #canvas {
+    background-color: #f0f0f0;
+  }
+  .box {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #3498db;
+  }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const boxes = [];
+
+  function createBox(x, y) {
+    const box = document.createElement('div');
+    box.className = 'box';
+    box.style.left = x + 'px';
+    box.style.top = y + 'px';
+    document.body.appendChild(box);
+
+    const boxObject = {
+      element: box,
+      x: x,
+      y: y,
+      velocityX: Math.random() * 4 - 2,
+      velocityY: Math.random() * 4 - 2,
+    };
+
+    boxes.push(boxObject);
+  }
+
+  function updatePhysics() {
+    for (const boxObject of boxes) {
+      const box = boxObject.element;
+      const boxRect = box.getBoundingClientRect();
+
+      const boxX = boxObject.x;
+      const boxY = boxObject.y;
+      const boxWidth = boxRect.width;
+      const boxHeight = boxRect.height;
+
+      // Simulate physics
+      boxObject.velocityY += 0.1; // Gravity
+      boxObject.x += boxObject.velocityX;
+      boxObject.y += boxObject.velocityY;
+
+      if (boxX < 0 || boxX + boxWidth > window.innerWidth) {
+        boxObject.velocityX *= -1; // Bounce off screen edges
+      }
+
+      if (boxY + boxHeight > window.innerHeight) {
+        boxObject.velocityY *= -0.8; // Bounce and lose some energy
+        boxObject.y = window.innerHeight - boxHeight;
+      }
+
+      box.style.left = boxObject.x + 'px';
+      box.style.top = boxObject.y + 'px';
+    }
+
+    requestAnimationFrame(updatePhysics);
+  }
+
+  canvas.addEventListener('click', (e) => {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    createBox(mouseX, mouseY);
+  });
+
+  updatePhysics();
+</script>
+</body>
+</html>

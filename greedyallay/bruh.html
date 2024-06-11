@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Custom OS</title>
+    <style>
+        /* Custom button styles */
+        #primaryButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 5px 10px;
+            background-color: #0078D4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Card styles */
+        #card {
+            position: fixed;
+            top: 50%;
+            right: -300px;
+            width: 300px;
+            height: 100%; /* Changed to 100% to reset height during close animation */
+            background-color: #F1F1F1;
+            color: #000;
+            transition: right 0.3s ease, border-radius 0.3s ease, height 0.3s ease, transform 0.3s ease, background-color 0.3s ease, filter 0.3s ease, opacity 0.3s ease; /* Added opacity and removed blur animation during close */
+            padding: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            transform: translateY(-50%); /* Center the card on the Y-axis */
+        }
+
+        /* Card styles when it is open */
+        #card.open {
+            right: 0;
+            border-radius: 10px;
+            height: 95%;
+            background-color: #451991b2;
+            backdrop-filter: blur(5px); /* Apply the blur effect when the card is open */
+            opacity: 1; /* Reset opacity during open animation */
+        }
+
+        /* Card styles when it is closing */
+        #card.closing {
+            right: -300px;
+            height: 100%; /* Reset height during close animation */
+            background-color: #F1F1F1;
+            filter: blur(0); /* Reset blur during close animation */
+            opacity: 0.75; /* Add 75% transparency during close animation */
+            border-radius: 0; /* Remove rounded corners during close animation */
+        }
+
+        /* App icons styles */
+        #appIcons {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        #appIcons > div {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0078D4;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: absolute;
+            display: none;
+            padding: 5px;
+            background-color: #000;
+            color: #fff;
+            border-radius: 5px;
+            pointer-events: none; /* Prevent the tooltip from blocking mouse events */
+        }
+
+        /* Search bar styles */
+        #searchBar {
+            width: 100%;
+            padding: 5px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Primary button at the bottom right -->
+    <button id="primaryButton">Start</button>
+
+    <div id="card">
+        <input type="text" id="searchBar" placeholder="Search...">
+        <div id="appIcons">
+            <!-- App icons will be added dynamically using JavaScript -->
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // JavaScript code
+        const primaryButton = document.getElementById('primaryButton');
+        const card = document.getElementById('card');
+        const tooltip = document.getElementById('tooltip');
+
+        function showCard() {
+            // Slide in the card from the right
+            card.classList.add('open');
+        }
+
+        function hideCard() {
+            // Slide out the card to the right
+            card.classList.remove('open');
+            card.classList.add('closing');
+            setTimeout(() => {
+                card.classList.remove('closing');
+            }, 300);
+        }
+
+        function handleControlKey(event) {
+            // Show/hide the card when Ctrl key is pressed
+            if (event.key === 'Control' || event.ctrlKey) {
+                if (card.classList.contains('open')) {
+                    hideCard();
+                } else {
+                    showCard();
+                }
+            }
+        }
+
+        function handleMouseMove(event) {
+            // Show the card when the mouse is at the maximum X value of the screen
+            const maxX = window.innerWidth;
+            const mouseX = event.clientX;
+
+            if (mouseX >= maxX) {
+                showCard();
+            }
+        }
+
+        function handleMouseLeave() {
+            // Hide the card when the mouse leaves the screen
+            hideCard();
+        }
+
+        function handleCardButtonClick() {
+            // Hide the card when a button on the card gets pressed
+            hideCard();
+        }
+
+        function handleDocumentClick(event) {
+            // Hide the card when clicking anywhere except for the card or the primary button
+            if (!card.contains(event.target) && event.target !== primaryButton) {
+                hideCard();
+            }
+        }
+
+        function showTooltip(event) {
+            // Show the tooltip with the app name when the button is hovered
+            const appName = event.target.getAttribute('data-appname');
+            tooltip.innerText = appName;
+            tooltip.style.display = 'block';
+            tooltip.style.left = `${event.clientX + 10}px`;
+            tooltip.style.top = `${event.clientY + 10}px`;
+        }
+
+        function hideTooltip() {
+            // Hide the tooltip when the mouse leaves the button
+            tooltip.style.display = 'none';
+        }
+
+        primaryButton.addEventListener('click', showCard);
+        document.addEventListener('keydown', handleControlKey); // Changed to Control key
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseleave', handleMouseLeave);
+        document.addEventListener('click', handleDocumentClick);
+
+        // Simulate the app list (replace this with your actual app list)
+        const apps = [
+            {
+                name: 'Information',
+                icon: 'Icons/info.svg',
+                width: '300',
+                height: '200',
+                script: "createNewWindow('Change Background', '<iframe src=\'Programs/bgchanger.gex/bgchanger.html\' width=\'50%\' height=\'100%\'></iframe>', 'default.svg', '300', '200')"
+            },
+            
+            {
+                name: 'Change Background',
+                icon: 'Icons/default.svg',
+                width: '300',
+                height: '200',
+                script: "createNewWindow('About GreedyOS', 'GreedyOS Is a fully web-based Operating System that can do very basic tasks, such as imitating a real desktop environment, display whatever you want in a window and much more. It is technically possible to download the Operating System, and modify the files. The windows usually run from an html that is inside of a folder that usually ends with the .gex file extension. It is also possible to compress apps and mods to send it to other people which can then extract it and drop in their own GreedyOS. (.gex stands for Greedy Executable, or Greedy Allay Executable.)  Though, GreedyOS has its fair share of bugs, for instance, resizing and moving windows may be extremely painful when you move your mose downwards, because the iframe will capture your mouse, making it (yet) impossible to track the mouse, and stops. Also windows keep playing audio, they actually do not get closed, only invisible, which is not only badly optimized, but also really annoying because when you close a playing window, it will be impossible to stop it, other than reloading the page.', 'info.svg', '347823', '2134234')"
+            },
+            // Add more apps with similar structures if needed
+            // {
+            //    name: 'App Name',
+            //    icon: 'app_icon.svg',
+            //    width: '400',
+            //    height: '300',
+            //    script: "Your JavaScript function here"
+            // }
+        ];
+
+        // Function to generate app icons
+        function generateAppIcons() {
+            const appIconsHTML = apps.map(app => `
+                <div data-appname="${app.name}" onmouseenter="showTooltip(event)" onmouseleave="hideTooltip()">
+                    <a href="#"><img src="${app.icon}" alt="${app.name}"></a>
+                </div>
+            `).join('');
+
+            return appIconsHTML;
+        }
+
+        // Function to handle search
+        function handleSearch(event) {
+            const searchTerm = event.target.value.toLowerCase();
+            const appIcons = document.querySelectorAll('#appIcons div');
+            
+            appIcons.forEach(icon => {
+                const appName = icon.getAttribute('data-appname').toLowerCase();
+                if (appName.includes(searchTerm)) {
+                    icon.style.display = 'flex';
+                } else {
+                    icon.style.display = 'none';
+                }
+            });
+        }
+
+        // Add app icons and search bar to the card
+        const cardContent = `
+            <input type="text" id="searchBar" placeholder="Search...">
+            <div id="appIcons">
+                ${generateAppIcons()}
+            </div>
+        `;
+
+        card.innerHTML = cardContent;
+
+        // Add event listener for search functionality
+        const searchBar = document.getElementById('searchBar');
+        searchBar.addEventListener('input', handleSearch);
+        
+        // Add event listener for button click on the card
+        const cardButtons = document.querySelectorAll('#appIcons div');
+        cardButtons.forEach(button => button.addEventListener('click', handleCardButtonClick));
+                function handleMouseEnterRight() {
+            // Show the card when the mouse enters the right side of the screen
+            if (card.classList.contains('closed')) {
+                showCard();
+            }
+        }
+
+        function handleMouseLeaveRight() {
+            // Hide the card when the mouse leaves the right side of the screen
+            if (!card.classList.contains('open')) {
+                hideCard();
+            }
+        }
+
+        function handleMouseMove(event) {
+            // Show or hide the card based on mouse position
+            const maxX = window.innerWidth;
+            const mouseX = event.clientX;
+
+            if (mouseX >= maxX) {
+                handleMouseEnterRight();
+            } else {
+                handleMouseLeaveRight();
+            }
+        }
+
+        // Add event listener for mouse movement
+        document.addEventListener('mousemove', handleMouseMove);
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Child HTML</title>
+    <script>
+        function sendDataToParent() {
+            var textBoxContent = document.getElementById("textbox").value;
+            window.parent.receiveData(textBoxContent);
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="textbox" placeholder="Enter text">
+    <button onclick="sendDataToParent()">Send to Parent</button>
+</body>
+</html>
