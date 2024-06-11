@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multiple Timers App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .timer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #ffffff;
+      position: relative;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      width: 300px;
+    }
+
+    .timer-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .timer-display {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background-color: #f0f0f0;
+    }
+
+    .progress {
+      height: 100%;
+      border-radius: 4px;
+      background-color: #0078D4;
+    }
+
+    .timer-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Plus icon styles */
+    .add-timer-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 32px;
+      cursor: pointer;
+      color: #0078D4;
+      background-color: #ffffff;
+      border-radius: 50%;
+      padding: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Dialog Styles */
+    .dialog {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+      display: none;
+      z-index: 9999;
+    }
+
+    .dialog-input {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .dialog-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* Delete icon styles */
+    /* Delete icon styles */
+    .delete-timer-icon {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      color: #dd0000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Multiple Timers</h1>
+
+  <div id="timers-container">
+    <!-- Timers will be dynamically added here -->
+  </div>
+
+  <!-- Plus icon for adding new timer -->
+  <div class="add-timer-icon">
+    <i class="fas fa-plus" onclick="showDialog()"></i>
+  </div>
+
+  <!-- Dialog for creating a new timer -->
+  <div class="dialog" id="dialog">
+    <div>Create New Timer</div>
+    <input class="dialog-input" type="number" placeholder="Enter duration in seconds" id="newTimerDuration">
+    <div class="dialog-buttons">
+      <button onclick="createTimer()">Create</button>
+      <button onclick="hideDialog()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    let timers = JSON.parse(localStorage.getItem('timers')) || {};
+
+    function formatTime(seconds) {
+      const hrs = Math.floor(seconds / 3600);
+      const mins = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
+      return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function updateTimerDisplay(timerId) {
+      const timerElement = document.getElementById(`timer${timerId}`);
+      const currentTime = timers[timerId].currentTime;
+      timerElement.textContent = formatTime(currentTime);
+
+      const progressBar = document.getElementById(`progress${timerId}`);
+      const totalTime = timers[timerId].totalTime;
+      const progressPercent = ((totalTime - currentTime) / totalTime) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+    }
+
+    function startTimer(timerId) {
+      if (!timers[timerId]) {
+        timers[timerId] = {
+          intervalId: null,
+          currentTime: timers[timerId]?.currentTime || 0,
+          totalTime: 0
+        };
+      }
+
+      if (!timers[timerId].intervalId) {
+        timers[timerId].intervalId = setInterval(() => {
+          timers[timerId].currentTime -= 1; // Countdown
+          if (timers[timerId].currentTime < 0) {
+            clearInterval(timers[timerId].intervalId);
+            timers[timerId].intervalId = null;
+            timers[timerId].currentTime = 0;
+          }
+          updateTimerDisplay(timerId);
+          localStorage.setItem('timers', JSON.stringify(timers));
+        }, 1000);
+      }
+
+      // Store the initial time when starting the timer
+      if (timers[timerId].currentTime === 0) {
+        const durationInput = document.getElementById('newTimerDuration');
+        const durationInSeconds = parseInt(durationInput.value, 10);
+
+        if (isNaN(durationInSeconds) || durationInSeconds <= 0) {
+          alert('Please enter a valid positive number.');
+          return;
+        }
+
+        timers[timerId].totalTime = durationInSeconds;
+        timers[timerId].currentTime = durationInSeconds;
+        localStorage.setItem('timers', JSON.stringify(timers));
+        updateTimerDisplay(timerId);
+      }
+    }
+
+    function pauseTimer(timerId) {
+      if (timers[timerId] && timers[timerId].intervalId) {
+        clearInterval(timers[timerId].intervalId);
+        timers[timerId].intervalId = null;
+        localStorage.setItem('timers', JSON.stringify(timers));
+      }
+    }
+
+    function stopTimer(timerId) {
+      if (timers[timerId]) {
+        clearInterval(timers[timerId].intervalId);
+        timers[timerId].intervalId = null;
+        timers[timerId].currentTime = 0;
+        updateTimerDisplay(timerId);
+        localStorage.setItem('timers', JSON.stringify(timers));
+      }
+    }
+
+    function resetTimer(timerId) {
+      if (timers[timerId]) {
+        clearInterval(timers[timerId].intervalId);
+        timers[timerId].intervalId = null;
+        timers[timerId].currentTime = timers[timerId].totalTime;
+        updateTimerDisplay(timerId);
+        localStorage.setItem('timers', JSON.stringify(timers));
+      }
+    }
+
+    // Functions for the dialog
+    function showDialog() {
+      const dialog = document.getElementById('dialog');
+      dialog.style.display = 'flex';
+      // Apply blur effect to background
+      document.body.style.filter = 'blur(5px)';
+    }
+
+    function hideDialog() {
+      const dialog = document.getElementById('dialog');
+      dialog.style.display = 'none';
+      // Remove blur effect from background
+      document.body.style.filter = 'none';
+    }
+
+    function createTimer() {
+      const durationInput = document.getElementById('newTimerDuration');
+      const durationInSeconds = parseInt(durationInput.value, 10);
+
+      if (isNaN(durationInSeconds) || durationInSeconds <= 0) {
+        alert('Please enter a valid positive number.');
+        return;
+      }
+
+      // Create the new timer div with controls
+      const timerId = Object.keys(timers).length + 1;
+      timers[timerId] = {
+        intervalId: null,
+        currentTime: 0,
+        totalTime: durationInSeconds
+      };
+      localStorage.setItem('timers', JSON.stringify(timers));
+
+      const timersContainer = document.getElementById('timers-container');
+      const timerDiv = document.createElement('div');
+      timerDiv.classList.add('timer');
+      timerDiv.id = `timer${timerId}`;
+
+      const deleteIcon = document.createElement('i');
+      deleteIcon.classList.add('fas', 'fa-trash-alt', 'delete-timer-icon');
+      deleteIcon.onclick = () => deleteTimer(timerId);
+      timerDiv.appendChild(deleteIcon);
+
+      const timerTitle = document.createElement('div');
+      timerTitle.classList.add('timer-title');
+      timerTitle.textContent = `Timer ${timerId}`;
+      timerDiv.appendChild(timerTitle);
+
+      const timerDisplay = document.createElement('div');
+      timerDisplay.classList.add('timer-display');
+      timerDisplay.id = `timer${timerId}`;
+      timerDisplay.textContent = formatTime(durationInSeconds);
+      timerDiv.appendChild(timerDisplay);
+
+      const progressBarContainer = document.createElement('div');
+      progressBarContainer.classList.add('progress-bar');
+      const progressBar = document.createElement('div');
+      progressBar.classList.add('progress');
+      progressBar.id = `progress${timerId}`;
+      progressBarContainer.appendChild(progressBar);
+      timerDiv.appendChild(progressBarContainer);
+
+      const timerControls = document.createElement('div');
+      timerControls.classList.add('timer-controls');
+      const startButton = document.createElement('button');
+      startButton.textContent = 'Start';
+      startButton.onclick = () => startTimer(timerId);
+      const pauseButton = document.createElement('button');
+      pauseButton.textContent = 'Pause';
+      pauseButton.onclick = () => pauseTimer(timerId);
+      const stopButton = document.createElement('button');
+      stopButton.textContent = 'Stop';
+      stopButton.onclick = () => stopTimer(timerId);
+      const resetButton = document.createElement('button');
+      resetButton.textContent = 'Reset';
+      resetButton.onclick = () => resetTimer(timerId);
+      timerControls.appendChild(startButton);
+      timerControls.appendChild(pauseButton);
+      timerControls.appendChild(stopButton);
+      timerControls.appendChild(resetButton);
+      timerDiv.appendChild(timerControls);
+
+      timersContainer.appendChild(timerDiv);
+      hideDialog();
+    }
+
+    function deleteTimer(timerId) {
+      const timerDiv = document.getElementById(`timer${timerId}`);
+      if (timerDiv) {
+        timerDiv.remove();
+        delete timers[timerId];
+        localStorage.setItem('timers', JSON.stringify(timers));
+      }
+    }
+
+    function loadTimers() {
+      const timersContainer = document.getElementById('timers-container');
+      timersContainer.innerHTML = '';
+
+      for (const timerId in timers) {
+        const timer = timers[timerId];
+
+        const timerDiv = document.createElement('div');
+        timerDiv.classList.add('timer');
+        timerDiv.id = `timer${timerId}`;
+
+        const deleteIcon = document.createElement('i');
+        deleteIcon.classList.add('fas', 'fa-trash-alt', 'delete-timer-icon');
+        deleteIcon.onclick = () => deleteTimer(timerId);
+        timerDiv.appendChild(deleteIcon);
+
+        const timerTitle = document.createElement('div');
+        timerTitle.classList.add('timer-title');
+        timerTitle.textContent = `Timer ${timerId}`;
+        timerDiv.appendChild(timerTitle);
+
+        const timerDisplay = document.createElement('div');
+        timerDisplay.classList.add('timer-display');
+        timerDisplay.id = `timer${timerId}`;
+        timerDisplay.textContent = formatTime(timer.currentTime);
+        timerDiv.appendChild(timerDisplay);
+
+        const progressBarContainer = document.createElement('div');
+        progressBarContainer.classList.add('progress-bar');
+        const progressBar = document.createElement('div');
+        progressBar.classList.add('progress');
+        progressBar.id = `progress${timerId}`;
+        progressBarContainer.appendChild(progressBar);
+        timerDiv.appendChild(progressBarContainer);
+
+        const timerControls = document.createElement('div');
+        timerControls.classList.add('timer-controls');
+        const startButton = document.createElement('button');
+        startButton.textContent = 'Start';
+        startButton.onclick = () => startTimer(timerId);
+        const pauseButton = document.createElement('button');
+        pauseButton.textContent = 'Pause';
+        pauseButton.onclick = () => pauseTimer(timerId);
+        const stopButton = document.createElement('button');
+        stopButton.textContent = 'Stop';
+        stopButton.onclick = () => stopTimer(timerId);
+        const resetButton = document.createElement('button');
+        resetButton.textContent = 'Reset';
+        resetButton.onclick = () => resetTimer(timerId);
+        timerControls.appendChild(startButton);
+        timerControls.appendChild(pauseButton);
+        timerControls.appendChild(stopButton);
+        timerControls.appendChild(resetButton);
+        timerDiv.appendChild(timerControls);
+
+        timersContainer.appendChild(timerDiv);
+      }
+    }
+
+    loadTimers();
+  </script>
+</body>
+</html>
+
