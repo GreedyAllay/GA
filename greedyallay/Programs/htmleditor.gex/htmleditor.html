@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auto-Update HTML Editor</title>
+  <style>
+    #editor {
+      width: 100%;
+      height: 300px;
+    }
+    #output {
+      width: 100%;
+      height: 300px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Auto-Update HTML Editor</h1>
+  <textarea id="editor" placeholder="Write your HTML code here..."></textarea>
+  <h2>Output:</h2>
+  <div id="output"></div>
+  
+  <script>
+    const editor = document.getElementById('editor');
+    const output = document.getElementById('output');
+
+    editor.addEventListener('input', () => {
+      const code = editor.value;
+      output.innerHTML = code;
+    });
+  </script>
+</body>
+</html>
