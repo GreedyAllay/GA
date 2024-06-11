@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* CSS styles for the top bar and game listing section */
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url("assets/pixelman.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center top; /* Shifted down */
+      font-family: 'Modrinth', sans-serif;
+    }
+
+    /* Hide the scrollbar */
+    body::-webkit-scrollbar {
+      width: 0em;
+    }
+
+    body::-webkit-scrollbar-track {
+        backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    body::-webkit-scrollbar-thumb {
+      background-color: transparent;
+    }
+
+    .top-bar {
+      background-color: rgba(0, 0, 0, 0.5);
+      height: 60px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      padding: 4px;
+      margin-right: 10px;
+    }
+
+    .search-input {
+      border: none;
+      background: transparent;
+      color: white;
+      padding: 4px;
+      font-size: 16px;
+    }
+
+    .game-list {
+      margin-top: 80px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    .game-card {
+      width: calc(20% - 20px);
+      margin-bottom: 20px;
+      margin-right: 20px;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      transition: transform 0.3s ease;
+    }
+
+    .game-card:hover {
+      transform: scale(1.05);
+      cursor: pointer; /* Change cursor to a pointer */;
+    }
+
+    .game-thumbnail {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .game-info {
+      margin-top: 10px;
+      color: white;
+    }
+
+    .game-title {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 5px;
+    }
+
+    .game-description {
+      margin-top: 5px;
+      font-size: 16px;
+    }
+
+    .back {
+      padding: 10px;
+      border-radius: 20px;
+      border: none;
+      background: transparent;
+      color: white;
+    }
+
+    .back:hover {
+      cursor: pointer;
+      background: rgba(135, 135, 135, 0.222);
+    }
+
+    /* Adjustments for responsive layout */
+    @media screen and (max-width: 1200px) {
+      .game-card {
+        width: calc(25% - 20px);
+      }
+    }
+
+    @media screen and (max-width: 992px) {
+      .game-card {
+        width: calc(33.33% - 20px);
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .game-card {
+        width: calc(50% - 20px);
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .game-card {
+        width: calc(100% - 20px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="search-bar">
+      <input type="text" id="search-bar" class="search-input" placeholder="Search games..." onkeyup="filterGames()">
+    </div>
+    <a href="https://hypernaut.000webhostapp.com/"><button class="back">Back to old theme</button></a>
+  </div>
+
+  <!-- Game listing section -->
+  <div class="game-list">
+    <!-- Game cards -->
+
+<div class="game-card" onclick="openRandomLink()" onmouseover="changeBackground(this)">
+        <img src="assets/random.png" alt="Game 2" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">Random</div>
+          <div class="game-description">Let fate decide for you!</div>
+        </div>
+      </div>
+
+<div class="game-card" onclick="showGameDetails('assets/pixelman.png', 'Pixelman Fight 2', 'Want to kill your friends, but without getting in trouble? No problem, then is Pixelman Fight 2 the perfect game for you. With fun pixelated blood, zombies and more! How long can you survive? And can you survive your own friends? Lets see!', 'games/pmf2.html')" onmouseover="changeBackground(this)">
+      <img src="assets/pixelman.png" alt="Game 1" class="game-thumbnail">
+      <div class="game-info">
+        <div class="game-title">Pixelman Fight 2</div>
+        <div class="game-description">Blinkin' new version! Now on the playstore!</div>
+      </div>
+    </div>
+
+<div class="game-card" onclick="showGameDetails('assets/pixelman1.png', 'Pixelman Fight Original', 'Description for Game 1', 'games/pmf1.html')" onmouseover="changeBackground(this)">
+      <img src="assets/pixelman1.png" alt="Game 2" class="game-thumbnail">
+      <div class="game-info">
+        <div class="game-title">Pixelman Fight</div>
+        <div class="game-description">Old-school version!</div>
+      </div>
+    </div>
+
+<div class="game-card" onclick="showGameDetails('assets/marsrover.png', 'Mars Rover', 'Drive over all of mars!', 'games/marsrover.html')" onmouseover="changeBackground(this)">
+      <img src="assets/marsrover.png" alt="Game 3" class="game-thumbnail">
+      <div class="game-info">
+        <div class="game-title">Mars Rover</div>
+        <div class="game-description">Drive over all of mars!</div>
+      </div>
+    </div>
+
+<div class="game-card" onclick="showGameDetails('assets/music.png', 'Music Studio', 'Let go that beat! This is one of my first ever real indie games, then came Pixelman Fight, I worked I believe months on, but when developing, you always tend to exceggerate...', 'games/tms.html')" onmouseover="changeBackground(this)">
+      <img src="assets/music.png" alt="Game 4" class="game-thumbnail">
+      <div class="game-info">
+        <div class="game-title">Music Studio</div>
+        <div class="game-description">Let go that beat!</div>
+      </div>
+    </div>
+
+<div class="game-card" onclick="showGameDetails('assets/glitchformer.png', 'Glitchformer', 'Glitch your way to victory!', 'games/glitchformer.html')" onmouseover="changeBackground(this)">
+      <img src="assets/glitchformer.png" alt="Game 5" class="game-thumbnail">
+      <div class="game-info">
+        <div class="game-title">Glitchformer</div>
+        <div class="game-description">Glitch your way to victory!</div>
+      </div>
+    </div>
+
+<div class="game-card" onclick="showGameDetails('assets/animator.png', 'Game 1', 'Description for Game 1', 'games/animationmaker.html')" onmouseover="changeBackground(this)">
+      <img src="assets/animator.png" alt="Game 6" class="game-thumbnail">
+      <div class="game-info">
+        <div class="game-title">Animation Maker</div>
+        <div class="game-description">Description of Game 6</div>
+      </div>
+    </div>
+
+<div class="game-card" onclick="showGameDetails('assets/cookie.png', 'Game 1', 'Description for Game 1', 'games/rapidclicker.html')" onmouseover="changeBackground(this)">
+        <img src="assets/cookie.png" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">Rapid Clicker</div>
+          <div class="game-description">Clickin' good!</div>
+        </div>
+      </div>
+
+  <div class="game-card" onclick="showGameDetails('assets/CloudBlox.png', 'Game 1', 'Description for Game 1')" onmouseover="changeBackground(this)">
+        <img src="assets/cloudblox.png" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">CloudBlox</div>
+          <div class="game-description">An online multiplayer builder!</div>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="showGameDetails('assets/greedyos.png', 'Game 1', 'Description for Game 1', 'games/greedyos.html')" onmouseover="changeBackground(this)">
+      <img src="assets/greedyos.png" alt="Game 5" class="game-thumbnail">
+      <div class="game-info">
+        <div class="game-title">Greedy OS</div>
+        <div class="game-description">A (somewhat greedy) operating system emulator.</div>
+      </div>
+    </div>
+
+<div class="game-card" onclick="showGameDetails('assets/sculptcraft.png', 'SculptCraft', 'Minecraft, but HD?', 'games/sculptcraft.html')" onmouseover="changeBackground(this)">
+        <img src="assets/sculptcraft.png" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">SculptCraft</div>
+          <div class="game-description">Minecraft, but HD?</div>
+        </div>
+      </div>
+
+  <div class="game-card" onclick="showGameDetails('assets/editoreditor.png', 'Game 1', 'Description for Game 1', 'games/vectoreditor.html')" onmouseover="changeBackground(this)">
+        <img src="assets/editoreditor.png" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">Vector Level Editor</div>
+          <div class="game-description">A pen rendered level editor.</div>
+        </div>
+      </div>
+
+  <div class="game-card" onclick="showGameDetails('assets/ninjastick.png', 'Game 1', 'Description for Game 1', 'games/sa.html')" onmouseover="changeBackground(this)">
+        <img src="assets/ninjastick.png" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">Ninjastick Fight</div>
+          <div class="game-description">This is my attempt to remake Pixelman Fight 1 in HD.</div>
+        </div>
+      </div>
+
+  <div class="game-card" onclick="showGameDetails('assets/clipart.png', 'Game 1', 'Description for Game 1')" onmouseover="changeBackground(this)">
+        <img src="assets/clipart.jpg" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">Clipart Maker</div>
+          <div class="game-description">An online place to create weird images and share them online!</div>
+        </div>
+      </div>
+
+  <div class="game-card" onclick="showGameDetails('assets/helloneighbor.png', 'Game 1', 'Description for Game 1')" onmouseover="changeBackground(this)">
+        <img src="assets/helloneighbor.jpg" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">Hello Neighbor 2D</div>
+          <div class="game-description">A game based off the alpha of Hello Neighbor, in 2D!</div>
+        </div>
+      </div>
+
+  <div class="game-card" onclick="showGameDetails('assets/lines.png', 'Game 1', 'Description for Game 1')" onmouseover="changeBackground(this)">
+        <img src="assets/lines.jpg" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">3D Line Engine</div>
+          <div class="game-description">An online multiplayer builder!</div>
+        </div>
+      </div>
+
+  <div class="game-card" onclick="showGameDetails('assets/editor.png', 'Game 1', 'Description for Game 1')" onmouseover="changeBackground(this)">
+        <img src="assets/editor.jpg" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">Level Editor</div>
+          <div class="game-description">My first ever level editor!</div>
+        </div>
+      </div>
+      
+  <div class="game-card" onclick="showGameDetails('assets/computer.png', 'Game 1', 'Description for Game 1')" onmouseover="changeBackground(this)">
+        <img src="assets/computer.jpg" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">Realistic Computer</div>
+          <div class="game-description">An online multiplayer builder!</div>
+        </div>
+      </div>
+
+  <div class="game-card" onclick="showGameDetails('assets/chat.jpg', 'Game 1', 'Description for Game 1')" onmouseover="changeBackground(this)">
+        <img src="assets/chat.jpg" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">AI chat</div>
+          <div class="game-description">A chatbot, built with simple algorythms.</div>
+        </div>
+      </div>
+
+  <div class="game-card" onclick="showGameDetails('assets/cloudchat.png', 'Game 1', 'Description for Game 1')" onmouseover="changeBackground(this)">
+        <img src="assets/cloudchat.png" alt="Game 5" class="game-thumbnail">
+        <div class="game-info">
+          <div class="game-title">Global Cloud Chat</div>
+          <div class="game-description">An online Chat!</div>
+        </div>
+      </div>
+  </div>
+ That's all I got for ya.
+
+  <script>
+    function filterGames() {
+      const input = document.getElementById('search-bar');
+      const filter = input.value.toUpperCase();
+      const gameCards = document.getElementsByClassName('game-card');
+      for (let card of gameCards) {
+        const title = card.getElementsByClassName('game-title')[0];
+        if (title.textContent.toUpperCase().indexOf(filter) > -1) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      }
+      card.style.transform = `scale(10)`;
+    }
+
+    function changeBackground(card) {
+      const thumbnail = card.querySelector('.game-thumbnail');
+      const backgroundImage = `url('${thumbnail.src}')`;
+      document.body.style.backgroundImage = backgroundImage;
+      const scale = scale + 100
+      
+    }
+  </script>
+    <script>
+        // Get the game cards
+        const gameCards = document.querySelectorAll('.game-card');
+    
+        // Calculate the middle position of the screen
+        const middlePosition = window.innerHeight / 2 - 100;
+ 
+        // Function to handle the scroll event
+        function handleScroll() {
+          // Get the current scroll position
+          const scrollPosition = window.scrollY;
+    
+          // Loop through each game card
+          gameCards.forEach((card) => {
+            // Calculate the distance from the middle position
+            const distanceFromMiddle = Math.abs(middlePosition - (card.offsetTop - scrollPosition));
+    
+            // Calculate the scale based on the distance
+            const scale = 1.1 + (distanceFromMiddle / middlePosition) * -0.2;
+    
+            // Apply the scale to the card
+            card.style.transform = `scale(${scale})`;
+          });
+        }
+    
+        // Attach the scroll event listener
+        window.addEventListener('scroll', handleScroll);
+      </script>
+      <script>
+        function showGameDetails(p, t, d, g) {
+          // Encode the data to be passed in the URL
+          const encodedThumbnail = encodeURIComponent(p);
+          const encodedTitle = encodeURIComponent(t);
+          const encodedDescription = encodeURIComponent(d);
+          const encodedGame = encodeURIComponent(g);
+      
+          // Construct the URL with the data as query parameters
+          const url = `game-details.html?p=${encodedThumbnail}&t=${encodedTitle}&d=${encodedDescription}&g=${encodedGame}`;
+      
+          // Redirect the user to the game details page
+          window.location.href = url;
+        }
+        function openRandomLink() {
+      // Array of links
+      const links = [
+        'games/animationmaker.html',
+        'games/cloudblox.html',
+        'games/glitchformer.html',
+        'games/marsrover.html',
+        'games/pmf1.html',
+        'games/pmf2.html',
+        'games/rapidclicker.html',
+        'games/tms.html'
+      ];
+
+      // Select a random link from the array
+      const randomIndex = Math.floor(Math.random() * links.length);
+      const randomLink = links[randomIndex];
+
+      // Open the random link in a new tab
+      window.open(randomLink, '_blank');
+    }
+      </script>
+      
+</body>
+</html>

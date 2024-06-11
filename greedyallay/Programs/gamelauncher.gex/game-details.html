@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* CSS styles for the game details page */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Modrinth', sans-serif;
+      background-color: #000;
+      color: #fff;
+    }
+
+    .game-details-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .game-thumbnail {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .game-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .game-description {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    .buttonplay {
+      background-color: aqua;
+      padding: 2%;
+      position: relative;
+      max-width: fit-content;
+      font-size: 18px;
+      border-radius: 20px;
+    }
+    
+    .buttonplay:hover {
+      background-color: aqua;
+      padding: 2%;
+      position: relative;
+      max-width: fit-content;
+      font-size: 18px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="game-details-container">
+    <img src="" alt="Game Thumbnail" class="game-thumbnail">
+    <h1 class="game-title">Game not found</h1>
+    <p class="game-description">Couldn't find game</p>
+    <div><a class="play" href="404.html"><button class="buttonplay">>> LAUNCH >></button></a></div>
+  </div>
+
+  <script>
+    // Get the game details from the URL parameters
+    var thumbnailUrl = decodeURIComponent(getParameterByName('p'));
+    var title = decodeURIComponent(getParameterByName('t'));
+    var description = decodeURIComponent(getParameterByName('d'));
+    var game = decodeURIComponent(getParameterByName('g'));
+
+    // Update the game details elements with the values
+    var thumbnailImg = document.querySelector('.game-thumbnail');
+    thumbnailImg.src = thumbnailUrl;
+
+    var titleElem = document.querySelector('.game-title');
+    titleElem.textContent = title;
+
+    var descriptionElem = document.querySelector('.game-description');
+    descriptionElem.textContent = description;
+
+    var playElem = document.querySelector('.play');
+    playElem.href = game;
+
+
+    // Function to get the URL parameter value
+    function getParameterByName(name) {
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(location.search);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return results[2].replace(/\+/g, " ");
+    }
+    
+  </script>
+</body>
+</html>

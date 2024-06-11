@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* CSS styles for the 404 page */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Modrinth', sans-serif;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .parallax-container {
+      position: relative;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      width: 100%;
+      height: 100%;
+    }
+
+    .parallax-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translateZ(100px);
+      font-size: 100px;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+    }
+
+    .parallax-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div class="parallax-container">
+    <p class="error-message">Sooooooo... Uhm yeah, I don't like to say this, but there's literally nothing here. Instead, enjoy this pretty nice Parallax-effect I made for you. Perhaps, this is the most interactive 404 page you've ever seen.</p>
+    <div class="parallax-text">404</div>
+    <div>It means that the page just does not exist</div>
+  </div>
+
+  <script>
+    // Function to handle mouse movement and update parallax effect
+    function handleMouseMovement(event) {
+      const container = document.querySelector('.parallax-container');
+      const text = document.querySelector('.parallax-text');
+
+      const containerWidth = container.offsetWidth;
+      const containerHeight = container.offsetHeight;
+
+      const mouseX = event.clientX - containerWidth / 2;
+      const mouseY = event.clientY - containerHeight / 2;
+
+      const rotateX = -mouseY / containerHeight * 20;
+      const rotateY = mouseX / containerWidth * 20;
+
+      container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      text.style.transform = `translate(-50%, -50%) translateZ(100px)`;
+    }
+
+    // Function to reset the parallax effect when the mouse leaves the container
+    function resetParallaxEffect() {
+      const container = document.querySelector('.parallax-container');
+      const text = document.querySelector('.parallax-text');
+
+      container.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      text.style.transform = 'translate(-50%, -50%) translateZ(100px)';
+    }
+
+    // Attach the mousemove and mouseleave event listeners to the container
+    const container = document.querySelector('.parallax-container');
+    container.addEventListener('mousemove', handleMouseMovement);
+    container.addEventListener('mouseleave', resetParallaxEffect);
+  </script>
+</body>
+</html>
