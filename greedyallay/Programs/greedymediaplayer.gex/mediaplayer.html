@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fullscreen Media Player</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    .fullscreen-media-player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .media-container {
+      display: none;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    #media-player, #image-player {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="fullscreen-media-player">
+    <div class="media-container">
+      <video id="media-player" controls></video>
+      <img id="image-player" />
+    </div>
+    <button id="open-file-button">Open File</button>
+  </div>
+
+  <script>
+    const openFileButton = document.getElementById('open-file-button');
+    const mediaPlayer = document.getElementById('media-player');
+    const imagePlayer = document.getElementById('image-player');
+    const mediaContainer = document.querySelector('.media-container');
+
+    openFileButton.addEventListener('click', () => {
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*, video/*';
+      fileInput.onchange = handleFileSelect;
+      fileInput.click();
+    });
+
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const fileType = file.type.split('/')[0];
+
+        if (fileType === 'image') {
+          mediaPlayer.pause();
+          mediaPlayer.src = '';
+          imagePlayer.src = URL.createObjectURL(file);
+          mediaContainer.style.display = 'block';
+        } else if (fileType === 'video') {
+          imagePlayer.src = '';
+          mediaContainer.style.display = 'block';
+          mediaPlayer.src = URL.createObjectURL(file);
+          mediaPlayer.load();
+          mediaPlayer.play();
+        }
+      }
+    }
+  </script>
+</body>
+</html>
