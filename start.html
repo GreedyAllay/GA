@@ -10,78 +10,44 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; /* Align content to the top */
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
             padding: 20px;
             box-sizing: border-box;
+            border: none;
         }
-        .container {
+        .logo-container {
+            margin-top: 20px;
+            width: 100%;
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
-            width: 100%;
-            max-width: 600px;
         }
-        .block {
-            background-color: #ffffff;
-            border: 1px solid #cccccc;
-            padding: 20px;
-            text-align: center;
-            width: 100%;
-            max-width: 150px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-            text-decoration: none;
-            color: #000000;
-            box-sizing: border-box;
-        }
-        .block:hover {
-            transform: scale(1.05);
-        }
-        .block a {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            height: 100%;
-            width: 100%;
+        .logo-container img {
+            max-width: 200px;
+            height: auto;
         }
         .search-container {
             margin-top: 20px;
             width: 100%;
             max-width: 600px;
+            display: flex;
+            justify-content: center;
         }
-        @media (min-width: 600px) {
-            .block {
-                width: calc(50% - 20px); /* Twee blokken per rij */
-            }
-        }
-        @media (min-width: 900px) {
-            .block {
-                width: calc(33.33% - 20px); /* Drie blokken per rij */
-            }
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="https://greedyallay.github.io/GA/" target="_blank" class="block">
-            Greedy Allay website
-        </a>
-        <a href="https://greedyallay.github.io/GA/Windows12.html" target="_blank" class="block">
-            Windows 12 Simulator
-        </a>
-        <a href="https://play.google.com/store/apps/details?id=com.greedyallay.pixelman&hl=en_US&pli=1" target="_blank" class="block">
-            DOWNLOAD PIXELMAN FIGHT 2
-        </a>
-        <a href="https://www.youtube.com/shorts/rmJLLWgakpI" target="_blank" class="block">
-            Popular short
-        </a>
+    <div class="logo-container">
+        <img src="https://www.logo.wine/a/logo/Google/Google-Logo.wine.svg" alt="Google Logo">
     </div>
     <div class="search-container">
-        <iframe src="https://cse.google.com/cse?cx=22d5896dac8494c6a" style="width:100%; height:500px;"></iframe>
+        <iframe src="https://programmablesearchengine.google.com/docs/element/compact.html" width="100%" height="100%" frameBorder="0"></iframe>
     </div>
 </body>
 </html>
