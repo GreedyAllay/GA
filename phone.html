@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Frame with iFrame</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #3f3f3f;
+        }
+
+        .phone-frame {
+            position: relative;
+            width: 380px;
+            height: 680px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Ensures corners are clipped */
+            border-radius: 30px; /* To match the rounded corners of the phone */
+        }
+
+        .phone-frame2 {
+            position: relative;
+            width: 390px;
+            height: 690px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Ensures corners are clipped */
+            border-radius: 30px; /* To match the rounded corners of the phone */
+        }
+
+        iframe {
+            position: absolute;
+            width: 358px;
+            height: 635px;
+            z-index: 1; /* Puts the iframe behind the SVG */
+            border: none;
+        }
+
+        svg {
+            position: absolute;
+            z-index: 1; /* Ensures the SVG is on top */
+            pointer-events: none; /* Allow interaction with the iframe through the SVG */
+        
+        }
+    </style>
+</head>
+<body>
+<div class="phone-frame">
+    <iframe src="https://greedyallay.github.io/GA/AllayOSv0.1.751"></iframe>
+    <svg width="380" height="750" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="55" width="375" height="645" rx="30" ry="30" fill="none" stroke="#3f3f3f" stroke-width="16"/>
+        <rect x="10" y="60" width="360" height="635" rx="30" ry="30" fill="none" stroke="grey" stroke-width="4"/>
+        <!-- Optional buttons or details for the phone design -->
+    </svg>
+</div>
+
+
+</body>
+</html>
