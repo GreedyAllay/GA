@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Creations</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            width: 300px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            text-align: left;
+            overflow: hidden;
+        }
+        .card img {
+            width: 100%;
+            display: block;
+            border-radius: 5px;
+        }
+        .card h2 {
+            margin: 10px 0;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .buttons a {
+            flex: 1;
+            background-color: #333;
+            color: #fff;
+            padding: 8px;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .buttons a:hover {
+            background-color: #555;
+        }
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 100px;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+         }
+        #loading.hidden {
+        opacity: 0;
+        visibility: hidden;
+        }
+        susricle {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">Loading...</div>
+    <h1>My Featured Projects</h1>
+    <div class="container">
+        <div class="card">
+            <img src="images1/cattie.png" alt="Cattie's World Thumbnail">
+            <h2>Cattie's World</h2>
+            <p>A game where you ride a bike and try not to die! With detailed gore and decals! There are several skins you can choose and the game offers good music. It is similar to Happy Wheels</p>
+            <div class="buttons">
+                <a href="https://greedyallay.github.io/CattiesWorld">Play</a>
+                <a href="https://github.com/GreedyAllay/CattiesWorld">Repo</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images1/dynamix.png" alt="Dynamix OS Thumbnail">
+            <h2>Dynamix OS v1.30</h2>
+            <p>A whole freaking Android simulator in your browser. Built from scratch and runs on Javascript, which means it runs on literally every device that has an internet connection. And it is made in Penguinmod.</p>
+            <div class="buttons">
+                <a href="https://greedyallay.github.io/DynamixOS/">Play</a>
+                <a href="https://github.com/GreedyAllay/DynamixOS">Repo</a>
+                <a href="https://greedyallay.github.io/DynamixOS/latest">Mobile</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images1/woof3000.png" alt="Woof 3000 Thumbnail">
+            <h2>Woof 3000 v1.75.1</h2>
+            <p>A fun lil' unfinished game with a wolf called woof 3000. Officially came up with this in a literal dream. Although it does not fully look like the dream, it is about a wolf, and it has robot legs for some reason. The chunk loading is extremely unstable and the weather is awesome!</p>
+            <div class="buttons">
+                <a href="https://greedyallay.github.io/GA/wooflauncher.html">Play</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images1/pixelman.png" alt="Pixelman Fight 2 Thumbnail">
+            <h2>Pixelman Fight 2</h2>
+            <p>This is one of the games I spent the most time developing. Started it in vanilla scratch, and then got it on the play store. Then it stopped working because 000gayhost stopped existing and ruined my app. I have to tell ya, I have actually spent months getting it to work in the play store, just for it to not work in a couple of months.</p>
+            <div class="buttons">
+                <a href="https://greedyallay.github.io/PixelmanFight/PMF%20Ultra.html">Play</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="" alt="">
+            <h2>PixelOS v2</h2>
+            <p>Recreation of my first PixelsOS which got lost in time. Also this is way more sophisticated but still buggy. Still put countless hours in it lmao. also i managed to recover a slightly older version of this but it was seemingly broken, and i need to fix it again.</p>
+            <div class="buttons">
+                <a href="">Play</a>
+                <a href="#">Source</a>
+                <a href="#">Thumbnail</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images1/windows12.png" alt="Windows 12 Thumbnail">
+            <h2>Windows 12</h2>
+            <p>Windows 12 made in scratch. Weird colors, unique design. Wouldn't want it as my own operating system tbh.</p>
+            <div class="buttons">
+                <a href="https://greedyallay.github.io/GA/Windows12.html">Play</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images1/greedyos.png" alt="GreedyOS Thumbnail">
+            <h2>GreedyOS HTML Edition</h2>
+            <p>An attempt at making an OS from the ground up in HTML, trying to be as different from any other os as possible. Weird taskbar, weird close button, everything is unique here... Though, it doesn't fit on most screens still... (zoom out pls) Also this was meant to be a website for my stuff as well...</p>
+            <div class="buttons">
+                <a href="https://greedyallay.github.io/GA/greedyallay/index.html">Play</a>
+                <a href="https://github.com/GreedyAllay/GA/tree/main/greedyallay">Source</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images1/discord.png" alt="Discord Thumbnail">
+            <h2>Discord</h2>
+            <p>My discord server</p>
+            <div class="buttons">
+                <a href="https://discord.gg/mVHKXvUgsn">Join</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images1/youtube.png" alt="YouTube Thumbnail">
+            <h2>YouTube</h2>
+            <p>My YouTube channel!</p>
+            <div class="buttons">
+                <a href="https://www.youtube.com/@Greedy-Allay">Watch</a>
+                <a class="susricle" href="https://www.youtube.com/@Greedy-Allay?sub_confirmation=1">Subscribe</a>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const images = document.querySelectorAll(".card img");
+        let loadedImages = 0;
+        images.forEach(img => {
+            img.onload = () => {
+                loadedImages++;
+                if (loadedImages === images.length) {
+                    document.getElementById("loading").style.display = "none";
+                    document.getElementById("content").style.display = "flex";
+                }
+            };
+            img.onerror = () => {
+                loadedImages++;
+                if (loadedImages === images.length) {
+                    document.getElementById("loading").style.display = "none";
+                    document.getElementById("content").style.display = "flex";
+                }
+            };
+        });
+    });
+</script>
+</html>
