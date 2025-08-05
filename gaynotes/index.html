@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link href="style.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="wrapper">
+    <div id="topbar">
+        <div class="option" onclick="createNote('Hello Note!')">
+            new
+        </div>
+        <!-- <div class="option" onclick="saveBoard()">
+            save
+        </div>
+        <div class="option" onclick="loadBoard()">
+            load
+        </div> -->
+        <div class="option" onclick="clearBoard(); saveBoard()">
+            clear
+        </div>
+    </div>
+    <div id="board"></div>
+</div>
+
+
+  <script>
+    let mouse = [0, 0]
+    let offset = [0, 0]
+    let selected = null
+
+    setInterval(saveBoard, 1000)
+
+    loadBoard()
+
+    function createNote(contents) {
+        const note = document.createElement('div')
+        note.className = "note"
+        note.style = ""
+        note.innerHTML = `
+        <div class='notetop' style='padding: 3px' 
+        onmousedown="selected=this.parentElement;offset[0]=event.clientX-selected.offsetLeft;offset[1]=event.clientY-selected.offsetTop"
+        onmouseup="selected=null"
+        contentEditable=true
+        spellcheck=false
+        >note</div>
+        <div class='notecontents' contentEditable='true' style='padding: 6px' spellcheck=false>${contents}</div>
+        `
+        note.style.left = (random(0, window.innerWidth)+'px')
+        note.style.top = (random(0, window.innerHeight)+'px')
+        document.getElementById('board').appendChild(note)
+    } 
+
+    document.addEventListener('mousemove', function(event) {
+        mouse[0] = event.clientX
+        mouse[1] = event.clientY
+
+        if(selected) {
+            selected.style.left = (mouse[0] - offset[0]+'px')
+            selected.style.top = (mouse[1] - offset[1]+'px')
+        }
+    });
+
+    setInterval(() => {
+        
+    }, 1);
+
+    // for(let i = 0; i < 10; i++)
+    // {
+    // createNote(`this is the ${i}th note!`)
+    // }
+
+    function random(min, max) {
+        return Math.round(Math.random() * (max - min) + min);
+    }
+
+    function saveBoard() {
+        localStorage.setItem("board", document.getElementById("board").innerHTML)
+    }
+
+    function loadBoard() {
+        document.getElementById("board").innerHTML = localStorage.getItem("board")
+    }
+
+    function clearBoard() {
+        document.getElementById("board").innerHTML = ''
+    }
+  </script>
+</body>
+</html>
